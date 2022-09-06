@@ -153,6 +153,16 @@ void session::async_wait()
                         }
 
                         ////////////////////
+                        else if(cmd1 == cmd{ "_top" })
+                        {
+                            if(payload1.size() >= 12)
+                            {
+                                int num_mes = to_uint8(payload1[0]);
+                                maybe_call(top_cb_, num_mes);
+                            }
+                        }
+
+                        ////////////////////
                         else if(cmd1 == cmd{ "InCm" })
                         {
                             maybe_call(done_cb_);

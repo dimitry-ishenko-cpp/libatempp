@@ -46,9 +46,10 @@ public:
     void on_connect_failed(cb<void()> cb) { failed_cb_ = std::move(cb); }
 
     ////////////////////
-    void on_recv_version(cb<void(int, int)> cb) { ver_cb_ = std::move(cb); }
+    void on_recv_version(cb<void(int major, int minor)> cb) { ver_cb_ = std::move(cb); }
     void on_recv_prod_info(cb<void(std::string_view)> cb) { info_cb_ = std::move(cb); }
-    void on_recv_init_done(cb<void()> cb ) { done_cb_ = std::move(cb); }
+    void on_recv_top(cb<void(int num_mes)> cb) { top_cb_ = std::move(cb); }
+    void on_recv_init_done(cb<void()> cb) { done_cb_ = std::move(cb); }
 
 private:
     std::string hostname_;
@@ -69,6 +70,7 @@ private:
     ////////////////////
     cb<void(int, int)> ver_cb_;
     cb<void(std::string_view)> info_cb_;
+    cb<void(int)> top_cb_;
     cb<void()> done_cb_;
 };
 
