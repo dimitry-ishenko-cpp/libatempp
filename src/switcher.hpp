@@ -54,12 +54,16 @@ public:
     auto& mes() { return mes_; }
     auto const& mes() const { return mes_; }
 
+    auto me_count() const { return mes_.count(); }
+
     auto& me(int n) { return mes_.get(n); }
     auto const& me(int n) const { return mes_.get(n); }
 
     ////////////////////
     auto& inputs() { return ins_; }
     auto const& inputs() const { return ins_; }
+
+    auto input_count() const { return ins_.count(); }
 
     auto& input(int n) { return ins_.get(n); }
     auto const& input(int n) const { return ins_.get(n); }
