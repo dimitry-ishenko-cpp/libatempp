@@ -10,10 +10,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "me.hpp"
-#include "me_data.hpp"
 #include "types.hpp"
-
-#include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace atem
@@ -21,31 +18,25 @@ namespace atem
 
 ////////////////////////////////////////////////////////////////////////////////
 class session;
+struct me_data;
 
 ////////////////////////////////////////////////////////////////////////////////
 class mes
 {
 public:
-    mes(session&, int num_mes);
-
-    mes(const mes&) = delete;
-    mes& operator=(const mes&) = delete;
-
-    mes(mes&&) = default;
-    mes& operator=(mes&&) = default;
+    mes(session&, const vec<me_data>&);
 
     ////////////////////
     auto count() const { return data_.size(); }
 
-    me operator[](int n) { return me{ sess_, data_[n] }; }
-    const me operator[](int n) const { return me{ sess_, data_[n] }; }
+    auto& operator[](int n) { return data_[n]; }
+    auto const& operator[](int n) const { return data_[n]; }
 
-    me get(int n) { return me{ sess_, data_.at(n) }; }
-    const me get(int n) const { return me{ sess_, data_.at(n) }; }
+    auto& get(int n) { return data_.at(n); }
+    auto const& get(int n) const { return data_.at(n); }
 
 private:
-    ref<session> sess_;
-    mutable std::vector<me_data> data_;
+    vec<me> data_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

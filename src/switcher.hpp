@@ -33,12 +33,6 @@ class switcher
 public:
     switcher(asio::io_context&, std::string hostname, port = 9910);
 
-    switcher(const switcher&) = delete;
-    switcher& operator=(const switcher&) = delete;
-
-    switcher(switcher&&) = default;
-    switcher& operator=(switcher&&) = default;
-
     ////////////////////
     void connect() { sess_.connect(); }
     void disconnect() { sess_.disconnect(); }
@@ -59,8 +53,8 @@ public:
     auto& mes() { return mes_; }
     auto const& mes() const { return mes_; }
 
-    auto me(int n) { return mes().get(n); }
-    auto me(int n) const { return mes().get(n); }
+    auto& me(int n) { return mes_.get(n); }
+    auto const& me(int n) const { return mes_.get(n); }
 
 private:
     session sess_;

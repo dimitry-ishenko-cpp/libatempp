@@ -22,12 +22,14 @@ namespace atem
 ////////////////////////////////////////////////////////////////////////////////
 using port = uint16;
 
+struct me_data;
+
 ////////////////////////////////////////////////////////////////////////////////
 class session
 {
 public:
     session(asio::io_context&, std::string hostname, port);
-    ~session() { disconnect(); }
+    ~session();
 
     session(const session&) = delete;
     session& operator=(const session&) = delete;
@@ -48,7 +50,7 @@ public:
     ////////////////////
     void on_recv_version(cb<void(int major, int minor)> cb) { ver_cb_ = std::move(cb); }
     void on_recv_prod_info(cb<void(std::string_view)> cb) { info_cb_ = std::move(cb); }
-    void on_recv_top(cb<void(int num_mes)> cb) { top_cb_ = std::move(cb); }
+    void on_recv_top(cb<void(const vec<me_data>&)> cb) { top_cb_ = std::move(cb); }
     void on_recv_init_done(cb<void()> cb) { done_cb_ = std::move(cb); }
 
 private:
@@ -70,8 +72,10 @@ private:
     ////////////////////
     cb<void(int, int)> ver_cb_;
     cb<void(std::string_view)> info_cb_;
-    cb<void(int)> top_cb_;
+    cb<void(const vec<me_data>&)> top_cb_;
     cb<void()> done_cb_;
+
+    vec<me_data> mes_data_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

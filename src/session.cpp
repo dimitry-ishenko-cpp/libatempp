@@ -5,6 +5,7 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "me_data.hpp"
 #include "packet.hpp"
 #include "session.hpp"
 #include "utils.hpp"
@@ -34,6 +35,9 @@ session::session(asio::io_context& ctx, std::string hostname, port p) :
     hostname_{ std::move(hostname) }, port_{ p },
     socket_{ ctx }, timer_{ ctx }
 { }
+
+////////////////////////////////////////////////////////////////////////////////
+session::~session() { disconnect(); }
 
 ////////////////////////////////////////////////////////////////////////////////
 void session::connect()
@@ -157,8 +161,12 @@ void session::async_wait()
                         {
                             if(payload1.size() >= 12)
                             {
-                                int num_mes = to_uint8(payload1[0]);
-                                maybe_call(top_cb_, num_mes);
+                                int mes = to_uint8(payload1[0]);
+
+                                mes_data_.clear();
+                                for(int i = 0; i < mes; ++i) mes_data_.push_back(me_data{ i });
+
+                                maybe_call(top_cb_, mes_data_);
                             }
                         }
 
