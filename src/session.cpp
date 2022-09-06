@@ -16,11 +16,18 @@
 namespace atem
 {
 
+////////////////////////////////////////////////////////////////////////////////
 using asio::ip::udp;
 using namespace std::chrono_literals;
 
 // "magic" session id to initiate connection with ATEM
 constexpr uint16 init_sess_id = 0x1337;
+
+////////////////////////////////////////////////////////////////////////////////
+inline auto trimmed(std::string_view s)
+{
+    return s.substr(0, s.find('\0'));
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 session::session(asio::io_context& ctx, std::string hostname, port p) :
@@ -60,36 +67,9 @@ void session::disconnect()
         timer_.cancel();
         socket_.close();
 
-        maybe_call(disconnected_cb_);
+        maybe_call(awol_cb_);
     }
 }
-
-////////////////////////////////////////////////////////////////////////////////
-void session::on_connected(cb<void()> cb)
-{
-    connected_cb_ = std::move(cb);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void session::on_disconnected(cb<void()> cb)
-{
-    disconnected_cb_ = std::move(cb);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void session::on_connect_failed(cb<void()> cb)
-{
-    conn_failed_cb_ = std::move(cb);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/*void session::send_packet(cmd c, payload p)
-{
-    packet pkt{ ping_packet, id_, ++pkt_id_ };
-    pkt.add_payload(c, p);
-
-    socket_.send(pkt.to_buffer());
-}*/
 
 ////////////////////////////////////////////////////////////////////////////////
 void session::conn_failed()
@@ -97,7 +77,7 @@ void session::conn_failed()
     timer_.cancel();
     socket_.close();
 
-    maybe_call(conn_failed_cb_);
+    maybe_call(failed_cb_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -131,7 +111,7 @@ void session::async_wait()
                         if(!connected_)
                         {
                             connected_ = true;
-                            maybe_call(connected_cb_);
+                            maybe_call(conn_cb_);
                         }
 
                         if(pkt.empty())
@@ -155,7 +135,28 @@ void session::async_wait()
                         auto [ c0, c1, c2, c3 ] = c.to_chars();
                         std::cerr << c0 << c1 << c2 << c3 << ": " << payload.size() << std::endl;
 #endif
-                        // process cmd1, payload1
+                        ////////////////////
+                        if(cmd1 == cmd{ "_ver" })
+                        {
+                            if(payload1.size() >= 4)
+                            {
+                                int major = to_uint16(payload1[0], payload1[1]);
+                                int minor = to_uint16(payload1[2], payload1[3]);
+                                maybe_call(ver_cb_, major, minor);
+                            }
+                        }
+
+                        ////////////////////
+                        else if(cmd1 == cmd{ "_pin" })
+                        {
+                            if(payload1.size()) maybe_call(info_cb_, trimmed(payload1));
+                        }
+
+                        ////////////////////
+                        else if(cmd1 == cmd{ "InCm" })
+                        {
+                            maybe_call(done_cb_);
+                        }
                     }
                 }
             }
