@@ -14,10 +14,10 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-mes::mes(session& sess, const std::vector<me_data>& mes_data)
+mes::mes(session& sess, const vec<me_data>& data)
 {
-    for(auto const& me_data : mes_data)
-        mes_.emplace_back(sess, me_data);
+    for(auto const& data1 : data)
+        mes_.emplace_back(sess, data1);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
