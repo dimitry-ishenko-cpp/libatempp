@@ -12,6 +12,7 @@
 #include <cstdint>
 #include <functional>
 #include <utility> // std::reference_wrapper
+#include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace atem
@@ -30,6 +31,9 @@ using ref = std::reference_wrapper<T>;
 
 template<typename T>
 using cref = std::reference_wrapper<const T>;
+
+template<typename T>
+using vec = std::vector<T>;
 
 ////////////////////////////////////////////////////////////////////////////////
 }
