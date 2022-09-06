@@ -13,6 +13,7 @@ set(HEADERS
     src/cmd.hpp
     src/packet.hpp
     src/session.hpp
+    src/switcher.hpp
     src/types.hpp
     src/utils.hpp
 ) # public headers, use SOURCES for private headers
@@ -20,6 +21,7 @@ set(HEADERS
 set(SOURCES
     src/packet.cpp
     src/session.cpp
+    src/switcher.cpp
 )
 
 include(GNUInstallDirs)
