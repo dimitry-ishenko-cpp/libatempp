@@ -31,12 +31,6 @@ public:
     session(asio::io_context&, std::string hostname, port);
     ~session();
 
-    session(const session&) = delete;
-    session& operator=(const session&) = delete;
-
-    session(session&&) = default;
-    session& operator=(session&&) = default;
-
     ////////////////////
     void connect();
     void disconnect();
