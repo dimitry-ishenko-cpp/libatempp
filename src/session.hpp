@@ -23,6 +23,7 @@ namespace atem
 using port = uint16;
 
 struct me_data;
+struct input_data;
 
 ////////////////////////////////////////////////////////////////////////////////
 class session
@@ -45,7 +46,7 @@ public:
     void on_recv_version(cb<void(int major, int minor)> cb) { ver_cb_ = std::move(cb); }
     void on_recv_prod_info(cb<void(std::string_view)> cb) { info_cb_ = std::move(cb); }
 
-    using done_cb = cb<void(const vec<me_data>&)>;
+    using done_cb = cb<void(const vec<me_data>&, const vec<input_data>&)>;
     void on_recv_init_done(done_cb cb) { done_cb_ = std::move(cb); }
 
 private:
@@ -70,6 +71,7 @@ private:
     done_cb done_cb_;
 
     vec<me_data> mes_data_;
+    vec<input_data> ins_data_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

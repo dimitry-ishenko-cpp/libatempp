@@ -9,6 +9,7 @@
 #define ATEM_SWITCHER_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "inputs.hpp"
 #include "mes.hpp"
 #include "session.hpp"
 #include "types.hpp"
@@ -56,6 +57,13 @@ public:
     auto& me(int n) { return mes_.get(n); }
     auto const& me(int n) const { return mes_.get(n); }
 
+    ////////////////////
+    auto& inputs() { return ins_; }
+    auto const& inputs() const { return ins_; }
+
+    auto& input(int n) { return ins_.get(n); }
+    auto const& input(int n) const { return ins_.get(n); }
+
 private:
     session sess_;
 
@@ -69,6 +77,7 @@ private:
     std::string prod_info_;
 
     atem::mes mes_;
+    atem::inputs ins_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

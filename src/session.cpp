@@ -5,6 +5,7 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "input_data.hpp"
 #include "me_data.hpp"
 #include "packet.hpp"
 #include "session.hpp"
@@ -23,6 +24,21 @@ using namespace std::chrono_literals;
 
 // "magic" session id to initiate connection with ATEM
 constexpr uint16 init_sess_id = 0x1337;
+
+////////////////////////////////////////////////////////////////////////////////
+constexpr auto InPr_long_name_size = 20;
+constexpr auto InPr_name_size = 4;
+
+enum CInL_set_mask : char
+{
+    CInL_none = 0x00,
+    CInL_set_long_name = 0x01,
+    CInL_set_name = 0x02,
+    CInL_set_port = 0x04,
+};
+
+constexpr auto CInL_long_name_size = InPr_long_name_size;
+constexpr auto CInL_name_size = InPr_name_size;
 
 ////////////////////////////////////////////////////////////////////////////////
 inline auto trimmed(std::string_view s)
@@ -132,45 +148,66 @@ void session::async_wait()
                     //
                     if(!pkt.is(atem::resend)) for(;;)
                     {
-                        auto [ cmd1, payload1 ] = pkt.next_payload();
-                        if(cmd1.invalid()) break;
+                        auto [ c, p ] = pkt.next_payload();
+                        if(c.invalid()) break;
 #if 0
                         // for debugging only
                         auto [ c0, c1, c2, c3 ] = c.to_chars();
                         std::cerr << c0 << c1 << c2 << c3 << ": " << payload.size() << std::endl;
 #endif
                         ////////////////////
-                        if(cmd1 == cmd{ "_ver" })
+                        if(c == cmd{ "_ver" })
                         {
-                            if(payload1.size() >= 4)
+                            if(p.size() >= 4)
                             {
-                                int major = to_uint16(payload1[0], payload1[1]);
-                                int minor = to_uint16(payload1[2], payload1[3]);
+                                int major = to_uint16(p[0], p[1]);
+                                int minor = to_uint16(p[2], p[3]);
                                 maybe_call(ver_cb_, major, minor);
                             }
                         }
 
                         ////////////////////
-                        else if(cmd1 == cmd{ "_pin" })
+                        else if(c == cmd{ "_pin" })
                         {
-                            if(payload1.size()) maybe_call(info_cb_, trimmed(payload1));
+                            if(p.size()) maybe_call(info_cb_, trimmed(p));
                         }
 
                         ////////////////////
-                        else if(cmd1 == cmd{ "_top" })
+                        else if(c == cmd{ "_top" })
                         {
-                            if(payload1.size() >= 12)
+                            if(p.size() >= 12)
                             {
                                 mes_data_.clear();
-                                int mes = to_uint8(payload1[0]);
+                                int mes = to_uint8(p[0]);
                                 for(int i = 0; i < mes; ++i) mes_data_.push_back(me_data{ i });
                             }
                         }
 
                         ////////////////////
-                        else if(cmd1 == cmd{ "InCm" })
+                        else if(c == cmd{ "InPr" })
                         {
-                            maybe_call(done_cb_, mes_data_);
+                            if(p.size() >= 36)
+                            {
+                                int id = to_uint16(p[0], p[1]);
+
+                                std::string long_name{ trimmed(p.substr(2, InPr_long_name_size)) };
+                                std::string name{ trimmed(p.substr(22, InPr_name_size)) };
+
+                                auto port = static_cast<input_port>(to_uint16(p[30], p[31]));
+                                auto type = static_cast<input_type>(to_uint8(p[32]));
+
+                                auto mes = to_uint8(p[35]);
+
+                                ins_data_.push_back(input_data{
+                                    id, std::move(name), std::move(long_name), type, port, mes
+                                });
+                            }
+                        }
+
+                        ////////////////////
+                        else if(c == cmd{ "InCm" })
+                        {
+                            maybe_call(done_cb_, mes_data_, ins_data_);
                         }
                     }
                 }
