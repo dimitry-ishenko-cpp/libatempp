@@ -27,16 +27,16 @@ public:
     mes(session&, const vec<me_data>&);
 
     ////////////////////
-    auto count() const { return data_.size(); }
+    auto count() const { return mes_.size(); }
 
-    auto& operator[](int n) { return data_[n]; }
-    auto const& operator[](int n) const { return data_[n]; }
+    auto& operator[](int n) { return mes_[n]; }
+    auto const& operator[](int n) const { return mes_[n]; }
 
-    auto& get(int n) { return data_.at(n); }
-    auto const& get(int n) const { return data_.at(n); }
+    auto& get(int n) { return mes_.at(n); }
+    auto const& get(int n) const { return mes_.at(n); }
 
 private:
-    vec<me> data_;
+    vec<me> mes_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

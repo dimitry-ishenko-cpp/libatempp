@@ -17,7 +17,7 @@ namespace atem
 mes::mes(session& sess, const std::vector<me_data>& mes_data)
 {
     for(auto const& me_data : mes_data)
-        data_.emplace_back(sess, me_data);
+        mes_.emplace_back(sess, me_data);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
