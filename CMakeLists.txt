@@ -11,6 +11,9 @@ add_definitions(-DVERSION="${PROJECT_VERSION}")
 
 set(HEADERS
     src/cmd.hpp
+    src/me.hpp
+    src/me_data.hpp
+    src/mes.hpp
     src/packet.hpp
     src/session.hpp
     src/switcher.hpp
@@ -19,6 +22,8 @@ set(HEADERS
 ) # public headers, use SOURCES for private headers
 
 set(SOURCES
+    src/me.cpp
+    src/mes.cpp
     src/packet.cpp
     src/session.cpp
     src/switcher.cpp
