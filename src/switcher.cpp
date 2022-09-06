@@ -40,13 +40,10 @@ switcher::switcher(asio::io_context& ctx, std::string hostname, atem::port port)
 
     sess_.on_recv_prod_info([=](std::string_view s){ prod_info_ = s; });
 
-    sess_.on_recv_top([=](const vec<me_data>& mes_data)
+    sess_.on_recv_init_done([=](const vec<me_data>& mes_data)
     {
         mes_ = atem::mes{ sess_, mes_data };
-    });
 
-    sess_.on_recv_init_done([=]()
-    {
         initialized_ = true;
         maybe_call(init_cb_);
     });

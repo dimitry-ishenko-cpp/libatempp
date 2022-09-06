@@ -161,19 +161,16 @@ void session::async_wait()
                         {
                             if(payload1.size() >= 12)
                             {
-                                int mes = to_uint8(payload1[0]);
-
                                 mes_data_.clear();
+                                int mes = to_uint8(payload1[0]);
                                 for(int i = 0; i < mes; ++i) mes_data_.push_back(me_data{ i });
-
-                                maybe_call(top_cb_, mes_data_);
                             }
                         }
 
                         ////////////////////
                         else if(cmd1 == cmd{ "InCm" })
                         {
-                            maybe_call(done_cb_);
+                            maybe_call(done_cb_, mes_data_);
                         }
                     }
                 }

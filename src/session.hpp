@@ -44,8 +44,9 @@ public:
     ////////////////////
     void on_recv_version(cb<void(int major, int minor)> cb) { ver_cb_ = std::move(cb); }
     void on_recv_prod_info(cb<void(std::string_view)> cb) { info_cb_ = std::move(cb); }
-    void on_recv_top(cb<void(const vec<me_data>&)> cb) { top_cb_ = std::move(cb); }
-    void on_recv_init_done(cb<void()> cb) { done_cb_ = std::move(cb); }
+
+    using done_cb = cb<void(const vec<me_data>&)>;
+    void on_recv_init_done(done_cb cb) { done_cb_ = std::move(cb); }
 
 private:
     std::string hostname_;
@@ -66,8 +67,7 @@ private:
     ////////////////////
     cb<void(int, int)> ver_cb_;
     cb<void(std::string_view)> info_cb_;
-    cb<void(const vec<me_data>&)> top_cb_;
-    cb<void()> done_cb_;
+    done_cb done_cb_;
 
     vec<me_data> mes_data_;
 };
