@@ -25,6 +25,9 @@ class me
 public:
     me(session& sess, const me_data& data) : sess_{ sess }, data_{ data } { }
 
+    ////////////////////
+    int num() const;
+
 private:
     ref<session> sess_;
     cref<me_data> data_;
