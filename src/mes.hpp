@@ -9,7 +9,9 @@
 #define ATEM_MES_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "me.hpp"
 #include "me_data.hpp"
+
 #include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,9 +34,18 @@ public:
     mes(mes&&) = default;
     mes& operator=(mes&&) = default;
 
+    ////////////////////
+    auto count() const { return data_.size(); }
+
+    me operator[](int n) { return me{ sess_, &data_[n] }; }
+    const me operator[](int n) const { return me{ sess_, &data_[n] }; }
+
+    me get(int n) { return me{ sess_, &data_.at(n) }; }
+    const me get(int n) const { return me{ sess_, &data_.at(n) }; }
+
 private:
     session* sess_ = nullptr;
-    std::vector<me_data> data_;
+    mutable std::vector<me_data> data_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
