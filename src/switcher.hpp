@@ -9,6 +9,7 @@
 #define ATEM_SWITCHER_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "mes.hpp"
 #include "session.hpp"
 #include "types.hpp"
 
@@ -54,6 +55,13 @@ public:
     auto const& protocol() const { return ver_; }
     auto const& product_info() const { return prod_info_; }
 
+    ////////////////////
+    auto& mes() { return mes_; }
+    auto const& mes() const { return mes_; }
+
+    auto me(int n) { return mes().get(n); }
+    auto me(int n) const { return mes().get(n); }
+
 private:
     session sess_;
 
@@ -65,6 +73,8 @@ private:
 
     version ver_;
     std::string prod_info_;
+
+    atem::mes mes_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

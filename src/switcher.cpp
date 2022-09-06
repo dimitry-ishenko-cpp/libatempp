@@ -38,6 +38,11 @@ switcher::switcher(asio::io_context& ctx, std::string hostname, port p) :
 
     sess_.on_recv_prod_info([=](std::string_view s){ prod_info_ = s; });
 
+    sess_.on_recv_top([=](int num_mes)
+    {
+        mes_ = atem::mes{ &sess_, num_mes };
+    });
+
     sess_.on_recv_init_done([=]()
     {
         initialized_ = true;
