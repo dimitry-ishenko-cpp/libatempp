@@ -189,18 +189,20 @@ void session::async_wait()
                             if(p.size() >= 36)
                             {
                                 int id = to_uint16(p[0], p[1]);
-
                                 std::string long_name{ trimmed(p.substr(2, InPr_long_name_size)) };
                                 std::string name{ trimmed(p.substr(22, InPr_name_size)) };
-
                                 auto port = static_cast<input_port>(to_uint16(p[30], p[31]));
                                 auto type = static_cast<input_type>(to_uint8(p[32]));
-
                                 auto mes = to_uint8(p[35]);
 
-                                ins_data_.push_back(input_data{
-                                    id, std::move(name), std::move(long_name), type, port, mes
-                                });
+                                // (1) calls to the place() function before "InCm" is received
+                                // will insert new input_data into ins_data_;
+                                // (2) when "InCm" is received ins_data_ will be used to create
+                                // new instance of the inputs class, and will be referenced
+                                // by all input class instances;
+                                // (3) further calls to place() will replace the existing
+                                // input_data in ins_data_;
+                                place(input_data{ id, std::move(name), std::move(long_name), type, port, mes });
                             }
                         }
 
@@ -216,6 +218,25 @@ void session::async_wait()
             async_wait();
         }
     });
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void session::place(input_data&& data)
+{
+    // inputs are sorted by id
+    for(auto it = ins_data_.begin(); ; ++it)
+    {
+        if(it == ins_data_.end() || data < *it)
+        {
+            ins_data_.insert(it, std::move(data));
+            break;
+        }
+        else if(!(*it < data)) // ie, *it == data
+        {
+            *it = std::move(data);
+            break;
+        }
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

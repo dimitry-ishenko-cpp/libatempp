@@ -72,6 +72,8 @@ private:
 
     vec<me_data> mes_data_;
     vec<input_data> ins_data_;
+
+    void place(input_data&&); // insert or replace input data
 };
 
 ////////////////////////////////////////////////////////////////////////////////
