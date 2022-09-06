@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <cstdint>
 #include <functional>
+#include <utility> // std::reference_wrapper
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace atem
@@ -23,6 +24,12 @@ using uint32 = std::uint32_t;
 
 template<typename T>
 using cb = std::function<T>;
+
+template<typename T>
+using ref = std::reference_wrapper<T>;
+
+template<typename T>
+using cref = std::reference_wrapper<const T>;
 
 ////////////////////////////////////////////////////////////////////////////////
 }
