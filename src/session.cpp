@@ -162,10 +162,9 @@ void session::async_wait()
                             if(payload1.size() >= 12)
                             {
                                 int mes = to_uint8(payload1[0]);
-                                mes_data_ = vec<me_data>(mes); // allocate all
 
-                                int i = 0;
-                                for(auto& data : mes_data_) data = me_data{ i++ };
+                                mes_data_.clear();
+                                for(int i = 0; i < mes; ++i) mes_data_.push_back(me_data{ i });
 
                                 maybe_call(top_cb_, mes_data_);
                             }
