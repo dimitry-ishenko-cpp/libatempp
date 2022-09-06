@@ -12,7 +12,6 @@ add_definitions(-DVERSION="${PROJECT_VERSION}")
 set(HEADERS
     src/cmd.hpp
     src/me.hpp
-    src/me_data.hpp
     src/mes.hpp
     src/packet.hpp
     src/session.hpp
@@ -23,6 +22,7 @@ set(HEADERS
 
 set(SOURCES
     src/me.cpp
+    src/me_data.hpp
     src/mes.cpp
     src/packet.cpp
     src/session.cpp
