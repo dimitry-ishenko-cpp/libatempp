@@ -14,7 +14,8 @@ namespace atem
 
 ////////////////////////////////////////////////////////////////////////////////
 switcher::switcher(asio::io_context& ctx, std::string hostname, port p) :
-    sess_{ ctx, std::move(hostname), p }
+    sess_{ ctx, std::move(hostname), p },
+    mes_{ sess_, 0 }
 {
     sess_.on_connected([=]{ maybe_call(conn_cb_); });
 
@@ -40,7 +41,7 @@ switcher::switcher(asio::io_context& ctx, std::string hostname, port p) :
 
     sess_.on_recv_top([=](int num_mes)
     {
-        mes_ = atem::mes{ &sess_, num_mes };
+        mes_ = atem::mes{ sess_, num_mes };
     });
 
     sess_.on_recv_init_done([=]()

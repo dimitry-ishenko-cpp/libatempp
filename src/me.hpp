@@ -9,6 +9,9 @@
 #define ATEM_ME_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "types.hpp"
+
+////////////////////////////////////////////////////////////////////////////////
 namespace atem
 {
 
@@ -20,15 +23,11 @@ struct me_data;
 class me
 {
 public:
-    me() = default;
-    me(session* sess, me_data* data) : sess_{ sess }, data_{ data } { }
-
-    ////////////////////
-    bool invalid() const { return data_ == nullptr; }
+    me(session& sess, const me_data& data) : sess_{ sess }, data_{ data } { }
 
 private:
-    session* sess_ = nullptr;
-    me_data* data_ = nullptr;
+    ref<session> sess_;
+    cref<me_data> data_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

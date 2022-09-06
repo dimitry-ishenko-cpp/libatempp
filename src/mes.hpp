@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "me.hpp"
 #include "me_data.hpp"
+#include "types.hpp"
 
 #include <vector>
 
@@ -25,8 +26,7 @@ class session;
 class mes
 {
 public:
-    mes() = default;
-    mes(session*, int num_mes);
+    mes(session&, int num_mes);
 
     mes(const mes&) = delete;
     mes& operator=(const mes&) = delete;
@@ -37,14 +37,14 @@ public:
     ////////////////////
     auto count() const { return data_.size(); }
 
-    me operator[](int n) { return me{ sess_, &data_[n] }; }
-    const me operator[](int n) const { return me{ sess_, &data_[n] }; }
+    me operator[](int n) { return me{ sess_, data_[n] }; }
+    const me operator[](int n) const { return me{ sess_, data_[n] }; }
 
-    me get(int n) { return me{ sess_, &data_.at(n) }; }
-    const me get(int n) const { return me{ sess_, &data_.at(n) }; }
+    me get(int n) { return me{ sess_, data_.at(n) }; }
+    const me get(int n) const { return me{ sess_, data_.at(n) }; }
 
 private:
-    session* sess_ = nullptr;
+    ref<session> sess_;
     mutable std::vector<me_data> data_;
 };
 

@@ -12,7 +12,7 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-mes::mes(session* sess, int num_mes) :
+mes::mes(session& sess, int num_mes) :
     sess_{ sess }
 {
     for(int n = 0; n < num_mes; ++n) data_.push_back(me_data{ n });
