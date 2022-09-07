@@ -86,7 +86,7 @@ private:
     cb<void(string_view)> info_cb_;
     void recv__pin(raw_view);
 
-    size_t mes_ = 0;
+    size_t mes_;
     void recv__top(raw_view);
 
     vec<input_data> ins_data_;

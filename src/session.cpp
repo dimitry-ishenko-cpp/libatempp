@@ -60,6 +60,8 @@ void session::connect()
     {
         id_ = init_sess_id;
         packet_id_ = 0;
+        mes_ = 0;
+        ins_data_.clear();
 
         udp::resolver resolver{ socket_.get_executor() };
         auto ep = *resolver.resolve(udp::v4(), hostname_, std::to_string(port_)).begin();
