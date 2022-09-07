@@ -9,6 +9,7 @@
 #define ATEM_SESSION_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "cmd.hpp"
 #include "packet.hpp" // raw_view
 #include "types.hpp"
 
@@ -65,6 +66,8 @@ private:
     void async_wait();
 
     uint16 id_, packet_id_;
+
+    void send_packet(cmd, raw_view payload);
 
     ////////////////////
     cb<void(int, int)> ver_cb_;

@@ -169,6 +169,15 @@ void session::async_wait()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void session::send_packet(cmd cmd1, raw_view payload1)
+{
+    auto pkt = packet::ping(id_, ++packet_id_ );
+    pkt.add_payload(cmd1, payload1);
+
+    socket_.send(pkt.to_buffer());
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void session::recv__ver(raw_view p)
 {
     if(p.size() >= 4)
