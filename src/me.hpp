@@ -28,9 +28,11 @@ public:
     ////////////////////
     auto num() const { return num_; }
 
+    auto pgm() const { return pgm_; }
     void set_pgm(src_id);
     void set_pgm(const input&);
 
+    auto pvw() const { return pvw_; }
     void set_pvw(src_id);
     void set_pvw(const input&);
 
@@ -43,9 +45,14 @@ public:
 private:
     ref<session> sess_;
     me_num num_;
+    src_id pgm_ = no_id;
+    src_id pvw_ = no_id;
+
+    cb<void(src_id)> pgm_chng_cb_, pvw_chng_cb_;
 
     friend class mes;
-    cb<void(src_id)> pgm_chng_cb_, pvw_chng_cb_;
+    void change_pgm(src_id);
+    void change_pvw(src_id);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

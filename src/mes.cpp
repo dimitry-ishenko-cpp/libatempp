@@ -21,12 +21,12 @@ mes::mes(session& sess, size_t num_mes) :
 
     sess_.get().on_pgm_changed([=](me_num me, src_id src)
     {
-        if(me < count()) maybe_call((*this)[me].pgm_chng_cb_, src);
+        if(me < count()) (*this)[me].change_pgm(src);
     });
 
     sess_.get().on_pvw_changed([=](me_num me, src_id src)
     {
-        if(me < count()) maybe_call((*this)[me].pvw_chng_cb_, src);
+        if(me < count()) (*this)[me].change_pvw(src);
     });
 }
 
