@@ -26,7 +26,7 @@ public:
     input(session& sess, const input_data& data) : sess_{ sess }, data_{ data } { }
 
     ////////////////////
-    int id() const;
+    src_id id() const;
 
     const string& name() const;
     void set_name(string);

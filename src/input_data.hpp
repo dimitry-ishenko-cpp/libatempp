@@ -18,7 +18,7 @@ namespace atem
 ////////////////////////////////////////////////////////////////////////////////
 struct input_data
 {
-    int id = -1;
+    src_id id = static_cast<src_id>(-1);
     string name;
     string long_name;
     input_type type;

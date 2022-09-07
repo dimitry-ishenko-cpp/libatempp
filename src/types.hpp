@@ -41,6 +41,8 @@ template<typename T>
 using vec = std::vector<T>;
 
 ////////////////////////////////////////////////////////////////////////////////
+enum src_id { }; // input source id
+
 enum input_type
 {
     external = 0,

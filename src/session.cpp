@@ -203,7 +203,7 @@ void session::recv_InPr(raw_view p)
     {
         input_data data
         {
-            to_uint16(p[0], p[1]),                               // id
+            static_cast<src_id>(to_uint16(p[0], p[1])),          // id
             string{ trimmed(p.substr(22, InPr_name_size)) },     // name
             string{ trimmed(p.substr(2, InPr_long_name_size)) }, // long_name
             static_cast<input_type>(to_uint8(p[32])),            // type
