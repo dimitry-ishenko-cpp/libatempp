@@ -27,6 +27,8 @@ public:
     input(session& sess, const input_data& data) : sess_{ sess }, data_{ data } { }
 
     ////////////////////
+    int id() const;
+
     const std::string& name() const;
     void set_name(std::string);
 
