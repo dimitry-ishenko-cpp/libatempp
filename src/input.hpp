@@ -16,7 +16,9 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
+class me;
 class session;
+
 struct input_data;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -38,6 +40,12 @@ public:
 
     input_port port() const;
     void set_port(input_port);
+
+    void pgm_on(me_num);
+    void pgm_on(const me&);
+
+    void pvw_on(me_num);
+    void pvw_on(const me&);
 
 private:
     ref<session> sess_;
