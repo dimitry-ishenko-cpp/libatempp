@@ -153,8 +153,8 @@ void session::async_wait()
                         if(cmd1.invalid()) break;
 #if 0
                         // for debugging only
-                        auto [ c0, c1, c2, c3 ] = c.to_chars();
-                        std::cerr << c0 << c1 << c2 << c3 << ": " << payload.size() << std::endl;
+                        auto [ c0, c1, c2, c3 ] = cmd1.to_chars();
+                        std::cerr << c0 << c1 << c2 << c3 << ": " << payload1.size() << std::endl;
 #endif
                              if(cmd1 == cmd{ "_ver" }) recv__ver(payload1);
                         else if(cmd1 == cmd{ "_pin" }) recv__pin(payload1);
