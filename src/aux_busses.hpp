@@ -24,7 +24,6 @@ class aux_busses
 {
 public:
     aux_busses(session&, size_t num_auxs);
-    ~aux_busses();
 
     ////////////////////
     auto count() const { return auxs_.size(); }
@@ -36,7 +35,6 @@ public:
     auto const& get(int n) const { return auxs_.at(n); }
 
 private:
-    ref<session> sess_;
     vec<aux_bus> auxs_;
 };
 
