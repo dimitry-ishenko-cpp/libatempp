@@ -47,8 +47,8 @@ public:
     void on_recv_version(cb<void(int major, int minor)> cb) { ver_cb_ = std::move(cb); }
     void on_recv_prod_info(cb<void(string_view)> cb) { info_cb_ = std::move(cb); }
 
-    using done_cb = cb<void(size_t mes, const vec<input_data>&, size_t auxs)>;
-    void on_recv_init_done(done_cb cb) { done_cb_ = std::move(cb); }
+    void on_recv_top(cb<void(int mes, int auxs)> cb) { top_cb_ = std::move(cb); }
+    void on_recv_init_done(cb<void(const vec<input_data>&)> cb) { done_cb_ = std::move(cb); }
 
     void on_pgm_changed(cb<void(me_num, src_id)> cb) { pgm_chng_cb_ = std::move(cb); }
     void on_pvw_changed(cb<void(me_num, src_id)> cb) { pvw_chng_cb_ = std::move(cb); }
@@ -90,13 +90,13 @@ private:
     cb<void(string_view)> info_cb_;
     void recv__pin(raw_view);
 
-    size_t mes_, auxs_;
+    cb<void(int, int)> top_cb_;
     void recv__top(raw_view);
 
     vec<input_data> ins_data_;
     void recv_InPr(raw_view);
 
-    done_cb done_cb_;
+    cb<void(const vec<input_data>&)> done_cb_;
     void recv_InCm(raw_view);
 
     cb<void(me_num, src_id)> pgm_chng_cb_, pvw_chng_cb_;
