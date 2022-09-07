@@ -8,7 +8,6 @@
 #include "packet.hpp"
 #include "utils.hpp"
 
-#include <cstdint> // std::size_t
 #include <initializer_list>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -17,7 +16,7 @@ namespace atem
 
 ////////////////////////////////////////////////////////////////////////////////
 // packet header size
-constexpr std::size_t head_size = 12;
+constexpr size_t head_size = 12;
 
 // packet header
 //
@@ -120,7 +119,7 @@ std::tuple<cmd, raw_view> packet::next_payload()
 
     if(payload_.size() >= 2)
     {
-        std::size_t size = to_uint16(payload_[0], payload_[1]);
+        size_t size = to_uint16(payload_[0], payload_[1]);
         if(size >= 8 && size <= payload_.size())
         {
             cmd1 = payload_.substr(4, 4); // skip size and 2 more bytes

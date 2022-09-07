@@ -22,10 +22,6 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-using uint8 = std::uint8_t;
-using uint16 = std::uint16_t;
-using uint32 = std::uint32_t;
-
 template<typename T>
 using cb = std::function<T>;
 
@@ -35,11 +31,17 @@ using cref = std::reference_wrapper<const T>;
 template<typename T>
 using opt = std::optional<T>;
 
+using size_t = std::size_t;
+
 using string = std::string;
 using string_view = std::string_view;
 
 template<typename T>
 using ref = std::reference_wrapper<T>;
+
+using uint8 = std::uint8_t;
+using uint16 = std::uint16_t;
+using uint32 = std::uint32_t;
 
 template<typename T>
 using vec = std::vector<T>;
