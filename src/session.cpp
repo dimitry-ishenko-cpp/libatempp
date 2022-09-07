@@ -279,4 +279,38 @@ void session::set_input_props(src_id id, opt<string> name, opt<string> long_name
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void session::set_pgm(int me, src_id src)
+{
+    raw_data p(4, '\0');
+    p[0] = to_char(me);
+    std::tie(p[2], p[3]) = to_chars(src);
+    send_packet(cmd{ "CPgI" }, p);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void session::set_pvw(int me, src_id src)
+{
+    raw_data p(4, '\0');
+    p[0] = to_char(me);
+    std::tie(p[2], p[3]) = to_chars(src);
+    send_packet(cmd{ "CPvI" }, p);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void session::cut(int me)
+{
+    raw_data p(4, '\0');
+    p[0] = to_char(me);
+    send_packet(cmd{ "DCut" }, p);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void session::auto_trans(int me)
+{
+    raw_data p(4, '\0');
+    p[0] = to_char(me);
+    send_packet(cmd{ "DAut" }, p);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 }

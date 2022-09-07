@@ -53,6 +53,12 @@ public:
 
     void set_input_props(src_id, opt<string> name, opt<string> long_name, opt<input_port>);
 
+    void set_pgm(int me, src_id);
+    void set_pvw(int me, src_id);
+
+    void cut(int me);
+    void auto_trans(int me);
+
 private:
     string hostname_;
     port port_;
