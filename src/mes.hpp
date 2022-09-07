@@ -23,7 +23,7 @@ class session;
 class mes
 {
 public:
-    mes(session&, size_t num_mes);
+    explicit mes(session&);
 
     ////////////////////
     auto count() const { return mes_.size(); }
@@ -35,7 +35,11 @@ public:
     auto const& get(int n) const { return mes_.at(n); }
 
 private:
+    ref<session> sess_;
     vec<me> mes_;
+
+    friend class switcher;
+    void reset(size_t num_mes = 0);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

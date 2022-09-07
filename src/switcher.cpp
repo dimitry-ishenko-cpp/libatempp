@@ -16,7 +16,7 @@ namespace atem
 ////////////////////////////////////////////////////////////////////////////////
 switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
     sess_{ ctx, std::move(hostname), port },
-    mes_ { sess_, 0 },
+    mes_ { sess_ },
     ins_ { sess_, { } },
     auxs_{ sess_ }
 {
@@ -40,7 +40,7 @@ switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
 
     sess_.on_recv_top([=](size_t mes, size_t auxs)
     {
-        mes_ = atem::mes{ sess_, mes };
+        mes_.reset(mes);
         auxs_.reset(auxs);
     });
 
@@ -59,7 +59,7 @@ void switcher::connect()
     ver_ = version{ };
     prod_info_.clear();
 
-    mes_ = atem::mes{ sess_, 0 };
+    mes_.reset();
     ins_ = atem::inputs{ sess_, { } };
     auxs_.reset();
 
