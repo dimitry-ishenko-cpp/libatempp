@@ -9,6 +9,7 @@
 #define ATEM_SESSION_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "packet.hpp"
 #include "types.hpp"
 
 #include <asio.hpp>
@@ -67,13 +68,19 @@ private:
 
     ////////////////////
     cb<void(int, int)> ver_cb_;
+    void recv__ver(raw_view);
+
     cb<void(std::string_view)> info_cb_;
-    done_cb done_cb_;
+    void recv__pin(raw_view);
 
     vec<me_data> mes_data_;
-    vec<input_data> ins_data_;
+    void recv__top(raw_view);
 
-    void place(input_data&&); // insert or replace input data
+    vec<input_data> ins_data_;
+    void recv_InPr(raw_view);
+
+    done_cb done_cb_;
+    void recv_InCm(raw_view);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

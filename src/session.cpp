@@ -7,7 +7,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "input_data.hpp"
 #include "me_data.hpp"
-#include "packet.hpp"
 #include "session.hpp"
 #include "utils.hpp"
 
@@ -148,69 +147,18 @@ void session::async_wait()
                     //
                     if(!pkt.is(atem::resend)) for(;;)
                     {
-                        auto [ c, p ] = pkt.next_payload();
-                        if(c.invalid()) break;
+                        auto [ cmd1, payload1 ] = pkt.next_payload();
+                        if(cmd1.invalid()) break;
 #if 0
                         // for debugging only
                         auto [ c0, c1, c2, c3 ] = c.to_chars();
                         std::cerr << c0 << c1 << c2 << c3 << ": " << payload.size() << std::endl;
 #endif
-                        ////////////////////
-                        if(c == cmd{ "_ver" })
-                        {
-                            if(p.size() >= 4)
-                            {
-                                int major = to_uint16(p[0], p[1]);
-                                int minor = to_uint16(p[2], p[3]);
-                                maybe_call(ver_cb_, major, minor);
-                            }
-                        }
-
-                        ////////////////////
-                        else if(c == cmd{ "_pin" })
-                        {
-                            if(p.size()) maybe_call(info_cb_, trimmed(p));
-                        }
-
-                        ////////////////////
-                        else if(c == cmd{ "_top" })
-                        {
-                            if(p.size() >= 12)
-                            {
-                                mes_data_.clear();
-                                int mes = to_uint8(p[0]);
-                                for(int i = 0; i < mes; ++i) mes_data_.push_back(me_data{ i });
-                            }
-                        }
-
-                        ////////////////////
-                        else if(c == cmd{ "InPr" })
-                        {
-                            if(p.size() >= 36)
-                            {
-                                int id = to_uint16(p[0], p[1]);
-                                std::string long_name{ trimmed(p.substr(2, InPr_long_name_size)) };
-                                std::string name{ trimmed(p.substr(22, InPr_name_size)) };
-                                auto port = static_cast<input_port>(to_uint16(p[30], p[31]));
-                                auto type = static_cast<input_type>(to_uint8(p[32]));
-                                auto mes = to_uint8(p[35]);
-
-                                // (1) calls to the place() function before "InCm" is received
-                                // will insert new input_data into ins_data_;
-                                // (2) when "InCm" is received ins_data_ will be used to create
-                                // new instance of the inputs class, and will be referenced
-                                // by all input class instances;
-                                // (3) further calls to place() will replace the existing
-                                // input_data in ins_data_;
-                                place(input_data{ id, std::move(name), std::move(long_name), type, port, mes });
-                            }
-                        }
-
-                        ////////////////////
-                        else if(c == cmd{ "InCm" })
-                        {
-                            maybe_call(done_cb_, mes_data_, ins_data_);
-                        }
+                             if(cmd1 == cmd{ "_ver" }) recv__ver(payload1);
+                        else if(cmd1 == cmd{ "_pin" }) recv__pin(payload1);
+                        else if(cmd1 == cmd{ "_top" }) recv__top(payload1);
+                        else if(cmd1 == cmd{ "InPr" }) recv_InPr(payload1);
+                        else if(cmd1 == cmd{ "InCm" }) recv_InCm(payload1);
                     }
                 }
             }
@@ -221,22 +169,71 @@ void session::async_wait()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void session::place(input_data&& data)
+void session::recv__ver(raw_view p)
 {
-    // inputs are sorted by id
-    for(auto it = ins_data_.begin(); ; ++it)
+    if(p.size() >= 4)
     {
-        if(it == ins_data_.end() || data < *it)
+        int major = to_uint16(p[0], p[1]);
+        int minor = to_uint16(p[2], p[3]);
+        maybe_call(ver_cb_, major, minor);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void session::recv__pin(raw_view p)
+{
+    if(p.size()) maybe_call(info_cb_, trimmed(p));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void session::recv__top(raw_view p)
+{
+    if(p.size() >= 12)
+    {
+        mes_data_.clear();
+        int mes = to_uint8(p[0]);
+        for(int i = 0; i < mes; ++i) mes_data_.push_back(me_data{ i });
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void session::recv_InPr(raw_view p)
+{
+    if(p.size() >= 36)
+    {
+        input_data data
         {
-            ins_data_.insert(it, std::move(data));
-            break;
-        }
-        else if(!(*it < data)) // ie, *it == data
+            to_uint16(p[0], p[1]),                                      // id
+            std::string{ trimmed(p.substr(22, InPr_name_size)) },       // name
+            std::string{ trimmed(p.substr(2, InPr_long_name_size)) },   // long_name
+            static_cast<input_type>(to_uint8(p[32])),                   // type
+            static_cast<input_port>(to_uint16(p[30], p[31])),           // port
+            to_uint8(p[35]),                                            // mes
+        };
+
+        // check if we already have an entry with this input id,
+        // and if so replace it;
+        // to speed up search, we sort ins_data_ by input id
+        for(auto it = ins_data_.begin(); ; ++it)
         {
-            *it = std::move(data);
-            break;
+            if(it == ins_data_.end() || data.id < it->id)
+            {
+                ins_data_.insert(it, std::move(data));
+                break;
+            }
+            else if(data.id == it->id)
+            {
+                *it = std::move(data);
+                break;
+            }
         }
     }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void session::recv_InCm(raw_view)
+{
+    maybe_call(done_cb_, mes_data_, ins_data_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
