@@ -18,7 +18,7 @@ aux_busses::aux_busses(session& sess) :
 {
     sess_.get().on_src_changed([=](aux_num aux, src_id src)
     {
-        if(aux < count()) maybe_call((*this)[aux].src_chng_cb_, src);
+        if(aux < count()) (*this)[aux].change_src(src);
     });
 }
 

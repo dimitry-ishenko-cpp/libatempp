@@ -27,6 +27,7 @@ public:
     ////////////////////
     auto num() const { return num_; }
 
+    auto src() const { return src_; }
     void set_src(src_id);
 
     void on_src_changed(cb<void(src_id)> cb) { src_chng_cb_ = std::move(cb); }
@@ -34,9 +35,12 @@ public:
 private:
     ref<session> sess_;
     aux_num num_;
+    src_id src_ = no_id;
+
+    cb<void(src_id)> src_chng_cb_;
 
     friend class aux_busses;
-    cb<void(src_id)> src_chng_cb_;
+    void change_src(src_id);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
