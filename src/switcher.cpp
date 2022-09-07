@@ -24,10 +24,6 @@ switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
     sess_.on_disconnected([=]()
     {
         initialized_ = false;
-
-        ver_ = version{ };
-        prod_info_.clear();
-
         maybe_call(awol_cb_);
     });
 
@@ -49,6 +45,18 @@ switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
         initialized_ = true;
         maybe_call(init_cb_);
     });
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void switcher::connect()
+{
+    ver_ = version{ };
+    prod_info_.clear();
+
+    mes_ = atem::mes{ sess_, { } };
+    ins_ = atem::inputs{ sess_, { } };
+
+    sess_.connect();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

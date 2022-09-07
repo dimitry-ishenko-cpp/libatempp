@@ -34,7 +34,7 @@ public:
     switcher(asio::io_context&, string hostname, port = 9910);
 
     ////////////////////
-    void connect() { sess_.connect(); }
+    void connect();
     void disconnect() { sess_.disconnect(); }
 
     bool is_connected() const { return sess_.is_connected(); }
