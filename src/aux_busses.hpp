@@ -23,7 +23,7 @@ class session;
 class aux_busses
 {
 public:
-    aux_busses(session&, size_t num_auxs);
+    explicit aux_busses(session&);
 
     ////////////////////
     auto count() const { return auxs_.size(); }
@@ -35,7 +35,11 @@ public:
     auto const& get(int n) const { return auxs_.at(n); }
 
 private:
+    ref<session> sess_;
     vec<aux_bus> auxs_;
+
+    friend class switcher;
+    void reset(size_t num_auxs = 0);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
