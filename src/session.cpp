@@ -246,4 +246,37 @@ void session::recv_InCm(raw_view)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void session::set_input_props(src_id id, opt<string> name, opt<string> long_name, opt<input_port> port)
+{
+    raw_data p(32, '\0');
+
+    char mask = CInL_none;
+    if(long_name)
+    {
+        long_name->resize(CInL_long_name_size);
+        mask |= CInL_set_long_name;
+        p.replace(4, long_name->size(), *long_name);
+    }
+    if(name)
+    {
+        name->resize(CInL_name_size);
+        mask |= CInL_set_name;
+        p.replace(24, name->size(), *name);
+    }
+    if(port)
+    {
+        mask |= CInL_set_port;
+        std::tie(p[28], p[29]) = to_chars(*port);
+    }
+
+    if(mask != CInL_none)
+    {
+        p[0] = mask;
+        std::tie(p[2], p[3]) = to_chars(id);
+        send_packet(cmd{ "CInL" }, p);
+    }
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
 }

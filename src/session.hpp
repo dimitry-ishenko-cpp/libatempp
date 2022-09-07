@@ -51,6 +51,8 @@ public:
     using done_cb = cb<void(const vec<me_data>&, const vec<input_data>&)>;
     void on_recv_init_done(done_cb cb) { done_cb_ = std::move(cb); }
 
+    void set_input_props(src_id, opt<string> name, opt<string> long_name, opt<input_port>);
+
 private:
     string hostname_;
     port port_;
