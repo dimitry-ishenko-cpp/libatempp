@@ -24,7 +24,7 @@ struct input_data;
 class inputs
 {
 public:
-    inputs(session&, const vec<input_data>&);
+    explicit inputs(session& sess) : sess_{ sess } { }
 
     ////////////////////
     auto count() const { return ins_.size(); }
@@ -36,7 +36,11 @@ public:
     auto const& get(int n) const { return ins_.at(n); }
 
 private:
+    ref<session> sess_;
     vec<input> ins_;
+
+    friend class switcher;
+    void reset(const vec<input_data>& = { });
 };
 
 ////////////////////////////////////////////////////////////////////////////////

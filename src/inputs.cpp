@@ -14,10 +14,13 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-inputs::inputs(session& sess, const vec<input_data>& data)
+void inputs::reset(const vec<input_data>& data)
 {
+    ins_.clear();
     for(auto const& data1 : data)
-        ins_.emplace_back(sess, data1);
+    {
+        ins_.emplace_back(sess_.get(), data1);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
