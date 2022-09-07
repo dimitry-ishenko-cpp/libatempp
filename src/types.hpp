@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <cstdint>
 #include <functional>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility> // std::reference_wrapper
@@ -30,6 +31,9 @@ using cb = std::function<T>;
 
 template<typename T>
 using cref = std::reference_wrapper<const T>;
+
+template<typename T>
+using opt = std::optional<T>;
 
 using string = std::string;
 using string_view = std::string_view;
