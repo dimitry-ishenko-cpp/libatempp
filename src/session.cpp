@@ -163,6 +163,7 @@ void session::async_wait()
                         else if(cmd1 == cmd{ "InCm" }) recv_InCm(payload1);
                         else if(cmd1 == cmd{ "PrvI" }) recv_PrvI(payload1);
                         else if(cmd1 == cmd{ "PrgI" }) recv_PrgI(payload1);
+                        else if(cmd1 == cmd{ "AuxS" }) recv_AuxS(payload1);
                     }
                 }
             }
@@ -273,6 +274,18 @@ void session::recv_PrvI(raw_view p)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void session::recv_AuxS(raw_view p)
+{
+    if(p.size() >= 4)
+    {
+        auto aux = static_cast<aux_num>(to_uint8(p[0]));
+        auto src = static_cast<src_id>(to_uint16(p[2], p[3]));
+
+        maybe_call(aux_chng_cb_, aux, src);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void session::set_input_props(src_id id, opt<string> name, opt<string> long_name, opt<input_port> port)
 {
     raw_data p(32, '\0');
@@ -337,6 +350,16 @@ void session::auto_trans(me_num me)
     raw_data p(4, '\0');
     p[0] = to_char(me);
     send_packet(cmd{ "DAut" }, p);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void session::set_src(aux_num aux, src_id src)
+{
+    raw_data p(4, '\0');
+    p[0] = 1;
+    p[1] = to_char(aux);
+    std::tie(p[2], p[3]) = to_chars(src);
+    send_packet(cmd{ "CAuS" }, p);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
