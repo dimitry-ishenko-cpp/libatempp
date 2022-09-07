@@ -199,9 +199,11 @@ void session::recv__top(raw_view p)
 {
     if(p.size() >= 12)
     {
-        mes_data_.clear();
         int mes = to_uint8(p[0]);
-        for(int i = 0; i < mes; ++i) mes_data_.push_back(me_data{ i });
+
+        mes_data_.clear();
+        for(int i = 0; i < mes; ++i)
+            mes_data_.push_back(me_data{ static_cast<me_num>(i) });
     }
 }
 
@@ -279,7 +281,7 @@ void session::set_input_props(src_id id, opt<string> name, opt<string> long_name
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void session::set_pgm(int me, src_id src)
+void session::set_pgm(me_num me, src_id src)
 {
     raw_data p(4, '\0');
     p[0] = to_char(me);
@@ -288,7 +290,7 @@ void session::set_pgm(int me, src_id src)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void session::set_pvw(int me, src_id src)
+void session::set_pvw(me_num me, src_id src)
 {
     raw_data p(4, '\0');
     p[0] = to_char(me);
@@ -297,7 +299,7 @@ void session::set_pvw(int me, src_id src)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void session::cut(int me)
+void session::cut(me_num me)
 {
     raw_data p(4, '\0');
     p[0] = to_char(me);
@@ -305,7 +307,7 @@ void session::cut(int me)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void session::auto_trans(int me)
+void session::auto_trans(me_num me)
 {
     raw_data p(4, '\0');
     p[0] = to_char(me);

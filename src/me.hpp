@@ -28,7 +28,7 @@ public:
     me(session& sess, const me_data& data) : sess_{ sess }, data_{ data } { }
 
     ////////////////////
-    int num() const;
+    me_num num() const;
 
     void set_pgm(src_id);
     void set_pgm(const input&);
