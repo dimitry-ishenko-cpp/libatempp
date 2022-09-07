@@ -10,6 +10,8 @@ add_definitions(-DASIO_STANDALONE -DASIO_NO_DEPRECATED)
 add_definitions(-DVERSION="${PROJECT_VERSION}")
 
 set(HEADERS
+    src/aux_bus.hpp
+    src/aux_busses.hpp
     src/cmd.hpp
     src/input.hpp
     src/inputs.hpp
@@ -23,6 +25,8 @@ set(HEADERS
 ) # public headers, use SOURCES for private headers
 
 set(SOURCES
+    src/aux_bus.cpp
+    src/aux_busses.cpp
     src/input.cpp
     src/input_data.hpp
     src/inputs.cpp
