@@ -24,6 +24,7 @@ class mes
 {
 public:
     mes(session&, size_t num_mes);
+    ~mes();
 
     ////////////////////
     auto count() const { return mes_.size(); }
@@ -35,6 +36,7 @@ public:
     auto const& get(int n) const { return mes_.at(n); }
 
 private:
+    ref<session> sess_;
     vec<me> mes_;
 };
 
