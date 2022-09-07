@@ -13,15 +13,22 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-aux_busses::aux_busses(session& sess, size_t num_auxs)
+aux_busses::aux_busses(session& sess, size_t num_auxs) :
+    sess_{ sess }
 {
     for(size_t i = 0; i < num_auxs; ++i)
-        auxs_.emplace_back(sess, static_cast<aux_num>(i));
+        auxs_.emplace_back(sess_.get(), static_cast<aux_num>(i));
 
-    sess.on_src_changed([=](aux_num aux, src_id src)
+    sess_.get().on_src_changed([=](aux_num aux, src_id src)
     {
         if(aux < count()) maybe_call((*this)[aux].src_chng_cb_, src);
     });
+}
+
+////////////////////////////////////////////////////////////////////////////////
+aux_busses::~aux_busses()
+{
+    sess_.get().on_src_changed(nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
