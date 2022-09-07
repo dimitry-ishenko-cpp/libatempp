@@ -51,6 +51,9 @@ public:
     using done_cb = cb<void(const vec<me_data>&, const vec<input_data>&)>;
     void on_recv_init_done(done_cb cb) { done_cb_ = std::move(cb); }
 
+    void on_pgm_changed(cb<void(me_num, src_id)> cb) { pgm_chng_cb_ = std::move(cb); }
+    void on_pvw_changed(cb<void(me_num, src_id)> cb) { pvw_chng_cb_ = std::move(cb); }
+
     void set_input_props(src_id, opt<string> name, opt<string> long_name, opt<input_port>);
 
     void set_pgm(me_num, src_id);
@@ -92,6 +95,10 @@ private:
 
     done_cb done_cb_;
     void recv_InCm(raw_view);
+
+    cb<void(me_num, src_id)> pgm_chng_cb_, pvw_chng_cb_;
+    void recv_PrgI(raw_view);
+    void recv_PrvI(raw_view);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

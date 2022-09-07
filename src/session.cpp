@@ -159,6 +159,8 @@ void session::async_wait()
                         else if(cmd1 == cmd{ "_top" }) recv__top(payload1);
                         else if(cmd1 == cmd{ "InPr" }) recv_InPr(payload1);
                         else if(cmd1 == cmd{ "InCm" }) recv_InCm(payload1);
+                        else if(cmd1 == cmd{ "PrvI" }) recv_PrvI(payload1);
+                        else if(cmd1 == cmd{ "PrgI" }) recv_PrgI(payload1);
                     }
                 }
             }
@@ -245,6 +247,30 @@ void session::recv_InPr(raw_view p)
 void session::recv_InCm(raw_view)
 {
     maybe_call(done_cb_, mes_data_, ins_data_);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void session::recv_PrgI(raw_view p)
+{
+    if(p.size() >= 4)
+    {
+        auto me = static_cast<me_num>(to_uint8(p[0]));
+        auto src = static_cast<src_id>(to_uint16(p[2], p[3]));
+
+        maybe_call(pgm_chng_cb_, me, src);
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void session::recv_PrvI(raw_view p)
+{
+    if(p.size() >= 4)
+    {
+        auto me = static_cast<me_num>(to_uint8(p[0]));
+        auto src = static_cast<src_id>(to_uint16(p[2], p[3]));
+
+        maybe_call(pvw_chng_cb_, me, src);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
