@@ -24,10 +24,7 @@ void me::set_pgm(src_id src) { sess_.get().set_pgm(num(), src); }
 void me::set_pgm(const input& in) { set_pgm(in.id()); }
 
 ////////////////////////////////////////////////////////////////////////////////
-void me::set_pvw(src_id src)
-{
-    sess_.get().set_pvw(num(), src);
-}
+void me::set_pvw(src_id src) { sess_.get().set_pvw(num(), src); }
 
 ////////////////////////////////////////////////////////////////////////////////
 void me::set_pvw(const input& in) { set_pvw(in.id()); }
