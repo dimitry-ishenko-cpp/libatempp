@@ -13,28 +13,20 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-mes::mes(session& sess, size_t num_mes) :
-    sess_{ sess }
+mes::mes(session& sess, size_t num_mes)
 {
     for(size_t i = 0; i < num_mes; ++i)
-        mes_.emplace_back(sess_.get(), static_cast<me_num>(i));
+        mes_.emplace_back(sess, static_cast<me_num>(i));
 
-    sess_.get().on_pgm_changed([=](me_num me, src_id src)
+    sess.on_pgm_changed([=](me_num me, src_id src)
     {
         if(me < count()) (*this)[me].change_pgm(src);
     });
 
-    sess_.get().on_pvw_changed([=](me_num me, src_id src)
+    sess.on_pvw_changed([=](me_num me, src_id src)
     {
         if(me < count()) (*this)[me].change_pvw(src);
     });
-}
-
-////////////////////////////////////////////////////////////////////////////////
-mes::~mes()
-{
-    sess_.get().on_pgm_changed(nullptr);
-    sess_.get().on_pvw_changed(nullptr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
