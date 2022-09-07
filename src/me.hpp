@@ -16,7 +16,9 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
+class input;
 class session;
+
 struct me_data;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -27,6 +29,15 @@ public:
 
     ////////////////////
     int num() const;
+
+    void set_pgm(src_id);
+    void set_pgm(const input&);
+
+    void set_pvw(src_id);
+    void set_pvw(const input&);
+
+    void cut();
+    void auto_trans();
 
 private:
     ref<session> sess_;
