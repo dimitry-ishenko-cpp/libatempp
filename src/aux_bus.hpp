@@ -27,9 +27,16 @@ public:
     ////////////////////
     auto num() const { return num_; }
 
+    void set_src(src_id);
+
+    void on_src_changed(cb<void(src_id)> cb) { src_chng_cb_ = std::move(cb); }
+
 private:
     ref<session> sess_;
     aux_num num_;
+
+    friend class aux_busses;
+    cb<void(src_id)> src_chng_cb_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
