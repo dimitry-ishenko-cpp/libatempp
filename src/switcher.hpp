@@ -9,6 +9,7 @@
 #define ATEM_SWITCHER_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "aux_busses.hpp"
 #include "inputs.hpp"
 #include "mes.hpp"
 #include "session.hpp"
@@ -67,6 +68,15 @@ public:
     auto& input(int n) { return ins_.get(n); }
     auto const& input(int n) const { return ins_.get(n); }
 
+    ////////////////////
+    auto& aux_busses() { return auxs_; }
+    auto const& aux_busses() const { return auxs_; }
+
+    auto aux_count() const { return auxs_.count(); }
+
+    auto& aux_bus(int n) { return auxs_.get(n); }
+    auto const& aux_bus(int n) const { return auxs_.get(n); }
+
 private:
     session sess_;
 
@@ -81,6 +91,7 @@ private:
 
     atem::mes mes_;
     atem::inputs ins_;
+    atem::aux_busses auxs_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

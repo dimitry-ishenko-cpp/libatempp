@@ -16,8 +16,9 @@ namespace atem
 ////////////////////////////////////////////////////////////////////////////////
 switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
     sess_{ ctx, std::move(hostname), port },
-    mes_{ sess_, { } },
-    ins_{ sess_, { } }
+    mes_ { sess_, { } },
+    ins_ { sess_, { } },
+    auxs_{ sess_, { } }
 {
     sess_.on_connected([=]{ maybe_call(conn_cb_); });
 
@@ -41,6 +42,7 @@ switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
     {
         mes_ = atem::mes{ sess_, mes };
         ins_ = atem::inputs{ sess_, ins_data };
+        auxs_= atem::aux_busses{ sess_, auxs };
 
         initialized_ = true;
         maybe_call(init_cb_);
@@ -55,6 +57,7 @@ void switcher::connect()
 
     mes_ = atem::mes{ sess_, { } };
     ins_ = atem::inputs{ sess_, { } };
+    auxs_= atem::aux_busses{ sess_, { } };
 
     sess_.connect();
 }
