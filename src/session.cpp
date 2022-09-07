@@ -61,6 +61,7 @@ void session::connect()
         id_ = init_sess_id;
         packet_id_ = 0;
         mes_ = 0;
+        auxs_ = 0;
         ins_data_.clear();
 
         udp::resolver resolver{ socket_.get_executor() };
@@ -203,6 +204,7 @@ void session::recv__top(raw_view p)
     if(p.size() >= 12)
     {
         mes_ = to_uint8(p[0]);
+        auxs_ = to_uint8(p[3]);
     }
 }
 
@@ -243,7 +245,7 @@ void session::recv_InPr(raw_view p)
 ////////////////////////////////////////////////////////////////////////////////
 void session::recv_InCm(raw_view)
 {
-    maybe_call(done_cb_, mes_, ins_data_);
+    maybe_call(done_cb_, mes_, ins_data_, auxs_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
