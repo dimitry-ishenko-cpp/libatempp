@@ -13,8 +13,6 @@
 #include "types.hpp"
 
 #include <asio.hpp>
-#include <string>
-#include <string_view>
 #include <tuple>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -22,8 +20,8 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-using raw_data = std::string;
-using raw_view = std::string_view;
+using raw_data = string;
+using raw_view = string_view;
 
 enum packet_type
 {

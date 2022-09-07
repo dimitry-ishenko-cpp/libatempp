@@ -11,6 +11,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <cstdint>
 #include <functional>
+#include <string>
+#include <string_view>
 #include <utility> // std::reference_wrapper
 #include <vector>
 
@@ -28,6 +30,9 @@ using cb = std::function<T>;
 
 template<typename T>
 using cref = std::reference_wrapper<const T>;
+
+using string = std::string;
+using string_view = std::string_view;
 
 template<typename T>
 using ref = std::reference_wrapper<T>;

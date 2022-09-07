@@ -16,25 +16,25 @@ namespace atem
 int input::id() const { return data_.get().id; }
 
 ////////////////////////////////////////////////////////////////////////////////
-const std::string& input::name() const
+const string& input::name() const
 {
     return data_.get().name;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void input::set_name(std::string name)
+void input::set_name(string name)
 {
 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-const std::string& input::long_name() const
+const string& input::long_name() const
 {
     return data_.get().long_name;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void input::set_long_name(std::string long_name)
+void input::set_long_name(string long_name)
 {
 
 }

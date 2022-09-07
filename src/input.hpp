@@ -10,7 +10,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "types.hpp"
-#include <string>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace atem
@@ -29,11 +28,11 @@ public:
     ////////////////////
     int id() const;
 
-    const std::string& name() const;
-    void set_name(std::string);
+    const string& name() const;
+    void set_name(string);
 
-    const std::string& long_name() const;
-    void set_long_name(std::string);
+    const string& long_name() const;
+    void set_long_name(string);
 
     input_type type() const;
 

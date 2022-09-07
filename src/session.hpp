@@ -9,7 +9,7 @@
 #define ATEM_SESSION_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
-#include "packet.hpp"
+#include "packet.hpp" // raw_view
 #include "types.hpp"
 
 #include <asio.hpp>
@@ -30,7 +30,7 @@ struct input_data;
 class session
 {
 public:
-    session(asio::io_context&, std::string hostname, port);
+    session(asio::io_context&, string hostname, port);
     ~session();
 
     ////////////////////
@@ -45,13 +45,13 @@ public:
 
     ////////////////////
     void on_recv_version(cb<void(int major, int minor)> cb) { ver_cb_ = std::move(cb); }
-    void on_recv_prod_info(cb<void(std::string_view)> cb) { info_cb_ = std::move(cb); }
+    void on_recv_prod_info(cb<void(string_view)> cb) { info_cb_ = std::move(cb); }
 
     using done_cb = cb<void(const vec<me_data>&, const vec<input_data>&)>;
     void on_recv_init_done(done_cb cb) { done_cb_ = std::move(cb); }
 
 private:
-    std::string hostname_;
+    string hostname_;
     port port_;
     asio::ip::udp::socket socket_;
 
@@ -70,7 +70,7 @@ private:
     cb<void(int, int)> ver_cb_;
     void recv__ver(raw_view);
 
-    cb<void(std::string_view)> info_cb_;
+    cb<void(string_view)> info_cb_;
     void recv__pin(raw_view);
 
     vec<me_data> mes_data_;

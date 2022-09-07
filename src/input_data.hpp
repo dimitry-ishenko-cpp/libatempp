@@ -10,7 +10,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "types.hpp"
-#include <string>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace atem
@@ -20,7 +19,8 @@ namespace atem
 struct input_data
 {
     int id = -1;
-    std::string name, long_name;
+    string name;
+    string long_name;
     input_type type;
     input_port port;
     uint8 mes;

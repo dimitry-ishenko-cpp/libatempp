@@ -40,13 +40,13 @@ constexpr auto CInL_long_name_size = InPr_long_name_size;
 constexpr auto CInL_name_size = InPr_name_size;
 
 ////////////////////////////////////////////////////////////////////////////////
-inline auto trimmed(std::string_view s)
+inline auto trimmed(string_view s)
 {
     return s.substr(0, s.find('\0'));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-session::session(asio::io_context& ctx, std::string hostname, port p) :
+session::session(asio::io_context& ctx, string hostname, port p) :
     hostname_{ std::move(hostname) }, port_{ p },
     socket_{ ctx }, timer_{ ctx }
 { }
@@ -203,12 +203,12 @@ void session::recv_InPr(raw_view p)
     {
         input_data data
         {
-            to_uint16(p[0], p[1]),                                      // id
-            std::string{ trimmed(p.substr(22, InPr_name_size)) },       // name
-            std::string{ trimmed(p.substr(2, InPr_long_name_size)) },   // long_name
-            static_cast<input_type>(to_uint8(p[32])),                   // type
-            static_cast<input_port>(to_uint16(p[30], p[31])),           // port
-            to_uint8(p[35]),                                            // mes
+            to_uint16(p[0], p[1]),                               // id
+            string{ trimmed(p.substr(22, InPr_name_size)) },     // name
+            string{ trimmed(p.substr(2, InPr_long_name_size)) }, // long_name
+            static_cast<input_type>(to_uint8(p[32])),            // type
+            static_cast<input_port>(to_uint16(p[30], p[31])),    // port
+            to_uint8(p[35]),                                     // mes
         };
 
         // check if we already have an entry with this input id,

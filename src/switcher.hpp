@@ -15,7 +15,6 @@
 #include "types.hpp"
 
 #include <asio.hpp>
-#include <string>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace atem
@@ -32,7 +31,7 @@ struct version
 class switcher
 {
 public:
-    switcher(asio::io_context&, std::string hostname, port = 9910);
+    switcher(asio::io_context&, string hostname, port = 9910);
 
     ////////////////////
     void connect() { sess_.connect(); }
@@ -78,7 +77,7 @@ private:
     cb<void()> init_cb_;
 
     version ver_;
-    std::string prod_info_;
+    string prod_info_;
 
     atem::mes mes_;
     atem::inputs ins_;

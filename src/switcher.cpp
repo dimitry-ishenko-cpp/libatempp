@@ -15,7 +15,7 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-switcher::switcher(asio::io_context& ctx, std::string hostname, atem::port port) :
+switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
     sess_{ ctx, std::move(hostname), port },
     mes_{ sess_, { } },
     ins_{ sess_, { } }
@@ -40,7 +40,7 @@ switcher::switcher(asio::io_context& ctx, std::string hostname, atem::port port)
         ver_.minor = minor;
     });
 
-    sess_.on_recv_prod_info([=](std::string_view s){ prod_info_ = s; });
+    sess_.on_recv_prod_info([=](string_view s){ prod_info_ = s; });
 
     sess_.on_recv_init_done([=](const vec<me_data>& mes_data, const vec<input_data>& ins_data)
     {
