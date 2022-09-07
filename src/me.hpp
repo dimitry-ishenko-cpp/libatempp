@@ -39,9 +39,15 @@ public:
     void cut();
     void auto_trans();
 
+    void on_pgm_changed(cb<void(src_id)> cb) { pgm_chng_cb_ = std::move(cb); }
+    void on_pvw_changed(cb<void(src_id)> cb) { pvw_chng_cb_ = std::move(cb); }
+
 private:
     ref<session> sess_;
     cref<me_data> data_;
+
+    friend class mes;
+    cb<void(src_id)> pgm_chng_cb_, pvw_chng_cb_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

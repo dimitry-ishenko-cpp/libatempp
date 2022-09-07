@@ -18,6 +18,16 @@ mes::mes(session& sess, const vec<me_data>& data)
 {
     for(auto const& data1 : data)
         mes_.emplace_back(sess, data1);
+
+    sess.on_pgm_changed([=](me_num me, src_id src)
+    {
+        if(me < count()) maybe_call((*this)[me].pgm_chng_cb_, src);
+    });
+
+    sess.on_pvw_changed([=](me_num me, src_id src)
+    {
+        if(me < count()) maybe_call((*this)[me].pvw_chng_cb_, src);
+    });
 }
 
 ////////////////////////////////////////////////////////////////////////////////
