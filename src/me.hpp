@@ -19,16 +19,14 @@ namespace atem
 class input;
 class session;
 
-struct me_data;
-
 ////////////////////////////////////////////////////////////////////////////////
 class me
 {
 public:
-    me(session& sess, const me_data& data) : sess_{ sess }, data_{ data } { }
+    me(session& sess, me_num num) : sess_{ sess }, num_{ num } { }
 
     ////////////////////
-    me_num num() const;
+    auto num() const { return num_; }
 
     void set_pgm(src_id);
     void set_pgm(const input&);
@@ -44,7 +42,7 @@ public:
 
 private:
     ref<session> sess_;
-    cref<me_data> data_;
+    me_num num_;
 
     friend class mes;
     cb<void(src_id)> pgm_chng_cb_, pvw_chng_cb_;

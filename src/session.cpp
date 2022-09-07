@@ -6,7 +6,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "input_data.hpp"
-#include "me_data.hpp"
 #include "session.hpp"
 #include "utils.hpp"
 
@@ -201,11 +200,7 @@ void session::recv__top(raw_view p)
 {
     if(p.size() >= 12)
     {
-        int mes = to_uint8(p[0]);
-
-        mes_data_.clear();
-        for(int i = 0; i < mes; ++i)
-            mes_data_.push_back(me_data{ static_cast<me_num>(i) });
+        mes_ = to_uint8(p[0]);
     }
 }
 
@@ -246,7 +241,7 @@ void session::recv_InPr(raw_view p)
 ////////////////////////////////////////////////////////////////////////////////
 void session::recv_InCm(raw_view)
 {
-    maybe_call(done_cb_, mes_data_, ins_data_);
+    maybe_call(done_cb_, mes_, ins_data_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

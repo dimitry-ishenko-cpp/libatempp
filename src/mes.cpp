@@ -5,7 +5,6 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
-#include "me_data.hpp"
 #include "mes.hpp"
 #include "session.hpp"
 
@@ -14,10 +13,10 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-mes::mes(session& sess, const vec<me_data>& data)
+mes::mes(session& sess, size_t num_mes)
 {
-    for(auto const& data1 : data)
-        mes_.emplace_back(sess, data1);
+    for(size_t i = 0; i < num_mes; ++i)
+        mes_.emplace_back(sess, static_cast<me_num>(i));
 
     sess.on_pgm_changed([=](me_num me, src_id src)
     {

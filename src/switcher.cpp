@@ -6,7 +6,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "input_data.hpp"
-#include "me_data.hpp"
 #include "switcher.hpp"
 #include "utils.hpp"
 
@@ -42,9 +41,9 @@ switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
 
     sess_.on_recv_prod_info([=](string_view s){ prod_info_ = s; });
 
-    sess_.on_recv_init_done([=](const vec<me_data>& mes_data, const vec<input_data>& ins_data)
+    sess_.on_recv_init_done([=](size_t mes, const vec<input_data>& ins_data)
     {
-        mes_ = atem::mes{ sess_, mes_data };
+        mes_ = atem::mes{ sess_, mes };
         ins_ = atem::inputs{ sess_, ins_data };
 
         initialized_ = true;

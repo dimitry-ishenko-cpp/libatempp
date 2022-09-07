@@ -27,7 +27,6 @@ set(SOURCES
     src/input_data.hpp
     src/inputs.cpp
     src/me.cpp
-    src/me_data.hpp
     src/mes.cpp
     src/packet.cpp
     src/session.cpp
