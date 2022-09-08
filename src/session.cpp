@@ -314,7 +314,6 @@ void session::set_input_props(src_id id, opt<string> name, opt<string> long_name
         std::tie(p[2], p[3]) = to_chars(id);
         send_packet(cmd{ "CInL" }, p);
     }
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
