@@ -40,6 +40,8 @@ private:
 
     friend class switcher;
     void reset(size_t num_mes = 0);
+    void change_pgm(me_num, in_id);
+    void change_pvw(me_num, in_id);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -15,17 +15,7 @@ namespace atem
 ////////////////////////////////////////////////////////////////////////////////
 mes::mes(session& sess) :
     sess_{ sess }
-{
-    sess_.get().on_pgm_changed([=](me_num me, in_id src)
-    {
-        if(me < count()) (*this)[me].change_pgm(src);
-    });
-
-    sess_.get().on_pvw_changed([=](me_num me, in_id src)
-    {
-        if(me < count()) (*this)[me].change_pvw(src);
-    });
-}
+{ }
 
 ////////////////////////////////////////////////////////////////////////////////
 void mes::reset(size_t num_mes)
@@ -35,6 +25,18 @@ void mes::reset(size_t num_mes)
     {
         mes_.emplace_back(sess_.get(), static_cast<me_num>(i));
     }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void mes::change_pgm(me_num me, in_id id)
+{
+    if(me < count()) (*this)[me].change_pgm(id);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void mes::change_pvw(me_num me, in_id id)
+{
+    if(me < count()) (*this)[me].change_pvw(id);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
