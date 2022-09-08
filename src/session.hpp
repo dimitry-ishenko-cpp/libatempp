@@ -47,7 +47,7 @@ public:
     void on_recv_version(cb<void(int major, int minor)> cb) { ver_cb_ = std::move(cb); }
     void on_recv_prod_info(cb<void(string_view)> cb) { info_cb_ = std::move(cb); }
 
-    using top_cb = cb<void(int mes, size_t auxs, const vec<input_data>&)>;
+    using top_cb = cb<void(size_t mes, size_t auxs, const vec<input_data>&)>;
     void on_recv_top(top_cb cb) { top_cb_ = std::move(cb); }
     void on_recv_init_done(cb<void()> cb) { done_cb_ = std::move(cb); }
 
