@@ -68,6 +68,15 @@ public:
     auto& input(int n) { return ins_.get(n); }
     auto const& input(int n) const { return ins_.get(n); }
 
+    auto find_input(in_id id) { return ins_.find(id); }
+    auto find_input(in_id id) const { return ins_.find(id); }
+
+    auto find_input(input_type t, size_t n = 0) { return ins_.find(t, n); }
+    auto find_input(input_type t, size_t n = 0) const { return ins_.find(t, n); }
+
+    auto find_input(input_port p, size_t n = 0) { return ins_.find(p, n); }
+    auto find_input(input_port p, size_t n = 0) const { return ins_.find(p, n); }
+
     ////////////////////
     auto& aux_busses() { return auxs_; }
     auto const& aux_busses() const { return auxs_; }
