@@ -35,6 +35,18 @@ public:
     auto& get(int n) { return ins_.at(n); }
     auto const& get(int n) const { return ins_.at(n); }
 
+    size_t count(input_type) const;
+    size_t count(input_port) const;
+
+    opt<input> find(src_id);
+    opt<input const> find(src_id) const;
+
+    opt<input> find(input_type, size_t n = 0);
+    opt<input const> find(input_type, size_t n = 0) const;
+
+    opt<input> find(input_port, size_t n = 0);
+    opt<input const> find(input_port, size_t n = 0) const;
+
 private:
     ref<session> sess_;
     vec<input> ins_;
