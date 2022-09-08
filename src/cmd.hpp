@@ -24,8 +24,8 @@ namespace atem
 class cmd
 {
 public:
-    constexpr cmd() : val_{ 0 } { }
-    constexpr cmd(string_view p) : val_{ 0 }
+    constexpr cmd() : val_{0} { }
+    constexpr cmd(string_view p) : val_{0}
     {
         auto end = std::min(p.begin() + 4, p.end());
         for(auto it = p.begin(); it != end; ++it) val_ = (val_ << 8) | *it;

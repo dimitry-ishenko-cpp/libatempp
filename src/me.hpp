@@ -23,7 +23,7 @@ class session;
 class me
 {
 public:
-    me(session& sess, me_num num) : sess_{ sess }, num_{ num } { }
+    me(session& sess, me_num num) : sess_{sess}, num_{num} { }
 
     ////////////////////
     auto num() const { return num_; }

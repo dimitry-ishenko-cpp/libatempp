@@ -15,10 +15,10 @@ namespace atem
 
 ////////////////////////////////////////////////////////////////////////////////
 switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
-    sess_{ ctx, std::move(hostname), port },
-    mes_ { sess_ },
-    ins_ { sess_ },
-    auxs_{ sess_ }
+    sess_{ctx, std::move(hostname), port},
+    mes_ {sess_},
+    ins_ {sess_},
+    auxs_{sess_}
 {
     sess_.on_connected([=]{ maybe_call(conn_cb_); });
 
@@ -40,9 +40,9 @@ switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
 
     sess_.on_recv_top([=](size_t mes, size_t auxs, const vec<input_data>& ins)
     {
-        mes_ = atem::mes{ sess_, mes };
-        ins_ = atem::inputs{ sess_, ins };
-        auxs_= atem::aux_busses{ sess_, auxs };
+        mes_ = atem::mes{sess_, mes};
+        ins_ = atem::inputs{sess_, ins};
+        auxs_= atem::aux_busses{sess_, auxs};
     });
 
     sess_.on_recv_init_done([=]()
@@ -62,9 +62,9 @@ void switcher::connect()
     ver_ = version{ };
     prod_info_.clear();
 
-    mes_ = atem::mes{ sess_ };
-    ins_ = atem::inputs{ sess_ };
-    auxs_= atem::aux_busses{ sess_ };
+    mes_ = atem::mes{sess_};
+    ins_ = atem::inputs{sess_};
+    auxs_= atem::aux_busses{sess_};
 
     sess_.connect();
 }

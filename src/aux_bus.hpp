@@ -22,7 +22,7 @@ class session;
 class aux_bus
 {
 public:
-    aux_bus(session& sess, aux_num num) : sess_{ sess }, num_{ num } { }
+    aux_bus(session& sess, aux_num num) : sess_{sess}, num_{num} { }
 
     ////////////////////
     auto num() const { return num_; }

@@ -46,9 +46,9 @@ inline auto trimmed(string_view s)
 
 ////////////////////////////////////////////////////////////////////////////////
 session::session(asio::io_context& ctx, string hostname, port p) :
-    hostname_{ std::move(hostname) }, port_{ p },
-    socket_{ ctx },
-    timer_ { ctx }
+    hostname_{std::move(hostname)}, port_{p},
+    socket_{ctx},
+    timer_ {ctx}
 { }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ void session::connect()
         id_ = init_sess_id;
         packet_id_ = 0;
 
-        udp::resolver resolver{ socket_.get_executor() };
+        udp::resolver resolver{socket_.get_executor()};
         auto ep = *resolver.resolve(udp::v4(), hostname_, std::to_string(port_)).begin();
 
         socket_.connect(ep);
@@ -154,14 +154,14 @@ void session::async_wait()
                         auto [ c0, c1, c2, c3 ] = cmd1.to_chars();
                         std::cerr << c0 << c1 << c2 << c3 << ": " << payload1.size() << std::endl;
 #endif
-                             if(cmd1 == cmd{ "_ver" }) recv__ver(payload1);
-                        else if(cmd1 == cmd{ "_pin" }) recv__pin(payload1);
-                        else if(cmd1 == cmd{ "_top" }) recv__top(payload1);
-                        else if(cmd1 == cmd{ "InPr" }) recv_InPr(payload1);
-                        else if(cmd1 == cmd{ "InCm" }) recv_InCm(payload1);
-                        else if(cmd1 == cmd{ "PrvI" }) recv_PrvI(payload1);
-                        else if(cmd1 == cmd{ "PrgI" }) recv_PrgI(payload1);
-                        else if(cmd1 == cmd{ "AuxS" }) recv_AuxS(payload1);
+                             if(cmd1 == cmd{"_ver"}) recv__ver(payload1);
+                        else if(cmd1 == cmd{"_pin"}) recv__pin(payload1);
+                        else if(cmd1 == cmd{"_top"}) recv__top(payload1);
+                        else if(cmd1 == cmd{"InPr"}) recv_InPr(payload1);
+                        else if(cmd1 == cmd{"InCm"}) recv_InCm(payload1);
+                        else if(cmd1 == cmd{"PrvI"}) recv_PrvI(payload1);
+                        else if(cmd1 == cmd{"PrgI"}) recv_PrgI(payload1);
+                        else if(cmd1 == cmd{"AuxS"}) recv_AuxS(payload1);
                     }
                 }
             }
@@ -174,7 +174,7 @@ void session::async_wait()
 ////////////////////////////////////////////////////////////////////////////////
 void session::send_packet(cmd cmd1, raw_view payload1)
 {
-    auto pkt = packet::ping(id_, ++packet_id_ );
+    auto pkt = packet::ping(id_, ++packet_id_);
     pkt.add_payload(cmd1, payload1);
 
     socket_.send(pkt.to_buffer());
@@ -308,7 +308,7 @@ void session::set_input_props(in_id id, opt<string> name, opt<string> long_name,
     {
         p[0] = mask;
         std::tie(p[2], p[3]) = to_chars(id);
-        send_packet(cmd{ "CInL" }, p);
+        send_packet(cmd{"CInL"}, p);
     }
 }
 
@@ -318,7 +318,7 @@ void session::set_pgm(me_num me, in_id id)
     raw_data p(4, '\0');
     p[0] = to_char(me);
     std::tie(p[2], p[3]) = to_chars(id);
-    send_packet(cmd{ "CPgI" }, p);
+    send_packet(cmd{"CPgI"}, p);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -327,7 +327,7 @@ void session::set_pvw(me_num me, in_id id)
     raw_data p(4, '\0');
     p[0] = to_char(me);
     std::tie(p[2], p[3]) = to_chars(id);
-    send_packet(cmd{ "CPvI" }, p);
+    send_packet(cmd{"CPvI"}, p);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -335,7 +335,7 @@ void session::cut(me_num me)
 {
     raw_data p(4, '\0');
     p[0] = to_char(me);
-    send_packet(cmd{ "DCut" }, p);
+    send_packet(cmd{"DCut"}, p);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -343,7 +343,7 @@ void session::auto_trans(me_num me)
 {
     raw_data p(4, '\0');
     p[0] = to_char(me);
-    send_packet(cmd{ "DAut" }, p);
+    send_packet(cmd{"DAut"}, p);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -353,7 +353,7 @@ void session::set_src(aux_num aux, in_id id)
     p[0] = 1;
     p[1] = to_char(aux);
     std::tie(p[2], p[3]) = to_chars(id);
-    send_packet(cmd{ "CAuS" }, p);
+    send_packet(cmd{"CAuS"}, p);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

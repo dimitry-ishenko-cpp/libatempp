@@ -40,7 +40,7 @@ constexpr std::initializer_list<char> init_payload{ 1, 0, 0, 0, 0, 0, 0, 0 };
 ////////////////////////////////////////////////////////////////////////////////
 packet packet::init(uint16 sess_id)
 {
-    packet pkt{ sess_id };
+    packet pkt{sess_id};
     pkt.set(atem::init);
     // add "magic" init packet payload
     pkt.data_.insert(pkt.data_.end(), init_payload.begin(), init_payload.end());
@@ -50,7 +50,7 @@ packet packet::init(uint16 sess_id)
 ////////////////////////////////////////////////////////////////////////////////
 packet packet::ping(uint16 sess_id, uint16 ping_id)
 {
-    packet pkt{ sess_id };
+    packet pkt{sess_id};
     pkt.set(atem::ping);
     pkt.set_ping_id(ping_id);
     return pkt;
@@ -59,7 +59,7 @@ packet packet::ping(uint16 sess_id, uint16 ping_id)
 ////////////////////////////////////////////////////////////////////////////////
 packet packet::pong(uint16 sess_id, uint16 pong_id)
 {
-    packet pkt{ sess_id };
+    packet pkt{sess_id};
     pkt.set(atem::pong);
     pkt.set_pong_id(pong_id);
     return pkt;

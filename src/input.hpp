@@ -25,7 +25,7 @@ struct input_data;
 class input
 {
 public:
-    input(session& sess, const input_data& data) : sess_{ sess }, data_{ data } { }
+    input(session& sess, const input_data& data) : sess_{sess}, data_{data} { }
 
     ////////////////////
     in_id id() const;
