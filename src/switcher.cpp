@@ -38,16 +38,15 @@ switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
 
     sess_.on_recv_prod_info([=](string_view s){ prod_info_ = s; });
 
-    sess_.on_recv_top([=](size_t mes, size_t auxs)
+    sess_.on_recv_top([=](int mes, int auxs, const vec<input_data>& ins)
     {
-        mes_.reset(mes);
+        mes_ .reset(mes);
+        ins_ .reset(ins);
         auxs_.reset(auxs);
     });
 
-    sess_.on_recv_init_done([=](const vec<input_data>& data)
+    sess_.on_recv_init_done([=]()
     {
-        ins_.reset(data);
-
         initialized_ = true;
         maybe_call(init_cb_);
     });

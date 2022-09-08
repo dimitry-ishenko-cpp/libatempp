@@ -47,7 +47,8 @@ inline auto trimmed(string_view s)
 ////////////////////////////////////////////////////////////////////////////////
 session::session(asio::io_context& ctx, string hostname, port p) :
     hostname_{ std::move(hostname) }, port_{ p },
-    socket_{ ctx }, timer_{ ctx }
+    socket_{ ctx },
+    timer_ { ctx }
 { }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,7 +61,6 @@ void session::connect()
     {
         id_ = init_sess_id;
         packet_id_ = 0;
-        ins_data_.clear();
 
         udp::resolver resolver{ socket_.get_executor() };
         auto ep = *resolver.resolve(udp::v4(), hostname_, std::to_string(port_)).begin();
@@ -187,6 +187,7 @@ void session::recv__ver(raw_view p)
     {
         int major = to_uint16(p[0], p[1]);
         int minor = to_uint16(p[2], p[3]);
+
         maybe_call(ver_cb_, major, minor);
     }
 }
@@ -203,8 +204,13 @@ void session::recv__top(raw_view p)
     if(p.size() >= 12)
     {
         int mes = to_uint8(p[0]);
-        int auxs = to_uint8(p[3]);
-        maybe_call(top_cb_, mes, auxs);
+        int ins = to_uint8(p[1]);
+        int auxs= to_uint8(p[3]);
+
+        ins_.clear();
+        ins_.resize(ins);
+
+        maybe_call(top_cb_, mes, auxs, std::cref(ins_));
     }
 }
 
@@ -213,39 +219,29 @@ void session::recv_InPr(raw_view p)
 {
     if(p.size() >= 36)
     {
-        input_data data
+        input_data new_in
         {
-            static_cast<src_id>(to_uint16(p[0], p[1])),          // id
+            static_cast<src_id>( to_uint16(p[0], p[1]) ),        // id
             string{ trimmed(p.substr(22, InPr_name_size)) },     // name
             string{ trimmed(p.substr(2, InPr_long_name_size)) }, // long_name
-            static_cast<input_type>(to_uint8(p[32])),            // type
-            static_cast<input_port>(to_uint16(p[30], p[31])),    // port
+            static_cast<input_type>( to_uint8(p[32]) ),          // type
+            static_cast<input_port>( to_uint16(p[30], p[31]) ),  // port
             to_uint8(p[35]),                                     // mes
         };
 
-        // check if we already have an entry with this input id,
-        // and if so replace it;
-        // to speed up search, we sort ins_data_ by input id
-        for(auto it = ins_data_.begin(); ; ++it)
-        {
-            if(it == ins_data_.end() || data.id < it->id)
+        for(auto& in : ins_)
+            if(in.id == no_id || in.id == new_in.id)
             {
-                ins_data_.insert(it, std::move(data));
+                in = std::move(new_in);
                 break;
             }
-            else if(data.id == it->id)
-            {
-                *it = std::move(data);
-                break;
-            }
-        }
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void session::recv_InCm(raw_view)
 {
-    maybe_call(done_cb_, ins_data_);
+    maybe_call(done_cb_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
