@@ -7,13 +7,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "input_data.hpp"
 #include "inputs.hpp"
-#include "session.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
+inputs::inputs(session& sess, const vec<input_data>& data)
+{
+    for(auto const& data1 : data)
+    {
+        ins_.emplace_back(sess, data1);
+    }
+}
+
 size_t inputs::count(input_type type) const
 {
     size_t n = 0;
@@ -69,16 +76,6 @@ opt<input const> inputs::find(input_port port, size_t n) const
 {
     for(auto const& in : ins_) if(in.port() == port && n-- == 0) return in;
     return { };
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void inputs::reset(const vec<input_data>& data)
-{
-    ins_.clear();
-    for(auto const& data1 : data)
-    {
-        ins_.emplace_back(sess_.get(), data1);
-    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
