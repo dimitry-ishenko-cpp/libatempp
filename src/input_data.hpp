@@ -19,10 +19,13 @@ namespace atem
 struct input_data
 {
     src_id id = no_id;
+
     string name;
     string long_name;
+
     input_type type;
     input_port port;
+
     uint8 mes;
 };
 
