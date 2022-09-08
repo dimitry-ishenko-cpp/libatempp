@@ -48,8 +48,8 @@ public:
     void pvw_on(const me&);
 
 private:
-    ref<session> sess_;
-    cref<input_data> data_;
+    ref_wrap<session> sess_;
+    ref_wrap<const input_data> data_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

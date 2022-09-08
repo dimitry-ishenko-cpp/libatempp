@@ -33,7 +33,7 @@ public:
     void on_src_changed(cb<void(in_id)> cb) { src_chng_cb_ = std::move(cb); }
 
 private:
-    ref<session> sess_;
+    ref_wrap<session> sess_;
     aux_num num_;
     in_id src_ = no_id;
 

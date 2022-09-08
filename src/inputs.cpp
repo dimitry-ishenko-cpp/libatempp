@@ -15,12 +15,10 @@ namespace atem
 ////////////////////////////////////////////////////////////////////////////////
 inputs::inputs(session& sess, const vec<input_data>& data)
 {
-    for(auto const& data1 : data)
-    {
-        ins_.emplace_back(sess, data1);
-    }
+    for(auto const& d : data) ins_.emplace_back(sess, d);
 }
 
+////////////////////////////////////////////////////////////////////////////////
 size_t inputs::count(input_type type) const
 {
     size_t n = 0;

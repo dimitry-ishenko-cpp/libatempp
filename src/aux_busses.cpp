@@ -14,10 +14,7 @@ namespace atem
 ////////////////////////////////////////////////////////////////////////////////
 aux_busses::aux_busses(session& sess, size_t auxs)
 {
-    for(size_t i = 0; i < auxs; ++i)
-    {
-        auxs_.emplace_back(sess, static_cast<aux_num>(i));
-    }
+    for(size_t i = 0; i < auxs; ++i) auxs_.emplace_back(sess, static_cast<aux_num>(i));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

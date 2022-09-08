@@ -43,7 +43,7 @@ public:
     void on_pvw_changed(cb<void(in_id)> cb) { pvw_chng_cb_ = std::move(cb); }
 
 private:
-    ref<session> sess_;
+    ref_wrap<session> sess_;
     me_num num_;
     in_id pgm_ = no_id;
     in_id pvw_ = no_id;

@@ -14,10 +14,7 @@ namespace atem
 ////////////////////////////////////////////////////////////////////////////////
 mes::mes(session& sess, size_t mes)
 {
-    for(size_t i = 0; i < mes; ++i)
-    {
-        mes_.emplace_back(sess, static_cast<me_num>(i));
-    }
+    for(size_t i = 0; i < mes; ++i) mes_.emplace_back(sess, static_cast<me_num>(i));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

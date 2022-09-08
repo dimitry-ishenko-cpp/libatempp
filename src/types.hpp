@@ -26,18 +26,15 @@ template<typename T>
 using cb = std::function<T>;
 
 template<typename T>
-using cref = std::reference_wrapper<const T>;
+using opt = std::optional<T>;
 
 template<typename T>
-using opt = std::optional<T>;
+using ref_wrap = std::reference_wrapper<T>;
 
 using size_t = std::size_t;
 
 using string = std::string;
 using string_view = std::string_view;
-
-template<typename T>
-using ref = std::reference_wrapper<T>;
 
 using uint8 = std::uint8_t;
 using uint16 = std::uint16_t;
