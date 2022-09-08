@@ -40,6 +40,7 @@ private:
 
     friend class switcher;
     void reset(size_t num_auxs = 0);
+    void change_src(aux_num, in_id);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
