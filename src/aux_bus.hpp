@@ -28,19 +28,19 @@ public:
     auto num() const { return num_; }
 
     auto src() const { return src_; }
-    void set_src(src_id);
+    void set_src(in_id);
 
-    void on_src_changed(cb<void(src_id)> cb) { src_chng_cb_ = std::move(cb); }
+    void on_src_changed(cb<void(in_id)> cb) { src_chng_cb_ = std::move(cb); }
 
 private:
     ref<session> sess_;
     aux_num num_;
-    src_id src_ = no_id;
+    in_id src_ = no_id;
 
-    cb<void(src_id)> src_chng_cb_;
+    cb<void(in_id)> src_chng_cb_;
 
     friend class aux_busses;
-    void change_src(src_id);
+    void change_src(in_id);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

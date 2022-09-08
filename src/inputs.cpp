@@ -30,14 +30,14 @@ size_t inputs::count(input_port port) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-opt<input> inputs::find(src_id id)
+opt<input> inputs::find(in_id id)
 {
     for(auto& in : ins_) if(in.id() == id) return in;
     return { };
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-opt<input const> inputs::find(src_id id) const
+opt<input const> inputs::find(in_id id) const
 {
     for(auto const& in : ins_) if(in.id() == id) return in;
     return { };

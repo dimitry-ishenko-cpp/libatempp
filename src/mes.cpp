@@ -16,12 +16,12 @@ namespace atem
 mes::mes(session& sess) :
     sess_{ sess }
 {
-    sess_.get().on_pgm_changed([=](me_num me, src_id src)
+    sess_.get().on_pgm_changed([=](me_num me, in_id src)
     {
         if(me < count()) (*this)[me].change_pgm(src);
     });
 
-    sess_.get().on_pvw_changed([=](me_num me, src_id src)
+    sess_.get().on_pvw_changed([=](me_num me, in_id src)
     {
         if(me < count()) (*this)[me].change_pvw(src);
     });

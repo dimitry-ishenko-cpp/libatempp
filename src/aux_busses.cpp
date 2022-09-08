@@ -16,9 +16,9 @@ namespace atem
 aux_busses::aux_busses(session& sess) :
     sess_{ sess }
 {
-    sess_.get().on_src_changed([=](aux_num aux, src_id src)
+    sess_.get().on_src_changed([=](aux_num aux, in_id id)
     {
-        if(aux < count()) (*this)[aux].change_src(src);
+        if(aux < count()) (*this)[aux].change_src(id);
     });
 }
 

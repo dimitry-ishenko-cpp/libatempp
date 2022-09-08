@@ -15,7 +15,7 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-src_id input::id() const
+in_id input::id() const
 {
     return data_.get().id;
 }
