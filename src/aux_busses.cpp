@@ -6,24 +6,17 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "aux_busses.hpp"
-#include "session.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-aux_busses::aux_busses(session& sess) :
-    sess_{ sess }
-{ }
-
-////////////////////////////////////////////////////////////////////////////////
-void aux_busses::reset(size_t num_auxs)
+aux_busses::aux_busses(session& sess, size_t auxs)
 {
-    auxs_.clear();
-    for(size_t i = 0; i < num_auxs; ++i)
+    for(size_t i = 0; i < auxs; ++i)
     {
-        auxs_.emplace_back(sess_.get(), static_cast<aux_num>(i));
+        auxs_.emplace_back(sess, static_cast<aux_num>(i));
     }
 }
 

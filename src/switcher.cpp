@@ -38,11 +38,11 @@ switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
 
     sess_.on_recv_prod_info([=](string_view s){ prod_info_ = s; });
 
-    sess_.on_recv_top([=](int mes, int auxs, const vec<input_data>& ins)
+    sess_.on_recv_top([=](int mes, size_t auxs, const vec<input_data>& ins)
     {
         mes_ .reset(mes);
         ins_ .reset(ins);
-        auxs_.reset(auxs);
+        auxs_= atem::aux_busses{ sess_, auxs };
     });
 
     sess_.on_recv_init_done([=]()
@@ -64,7 +64,7 @@ void switcher::connect()
 
     mes_ .reset();
     ins_ .reset();
-    auxs_.reset();
+    auxs_= atem::aux_busses{ sess_ };
 
     sess_.connect();
 }
