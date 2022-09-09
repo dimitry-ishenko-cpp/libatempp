@@ -12,14 +12,17 @@
 #include "aux_busses.hpp"
 #include "inputs.hpp"
 #include "mes.hpp"
-#include "session.hpp"
 #include "types.hpp"
 
 #include <asio.hpp>
+#include <memory>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace atem
 {
+
+////////////////////////////////////////////////////////////////////////////////
+class session;
 
 ////////////////////////////////////////////////////////////////////////////////
 struct version
@@ -36,9 +39,9 @@ public:
 
     ////////////////////
     void connect();
-    void disconnect() { sess_.disconnect(); }
+    void disconnect();
 
-    bool is_connected() const { return sess_.is_connected(); }
+    bool is_connected() const;
 
     void on_connected(cb<void()> cb) { conn_cb_ = std::move(cb); }
     void on_disconnected(cb<void()> cb) { awol_cb_ = std::move(cb); }
@@ -87,7 +90,7 @@ public:
     auto const& aux_bus(int n) const { return auxs_.get(n); }
 
 private:
-    session sess_;
+    std::unique_ptr<session> sess_;
 
     cb<void()> conn_cb_, awol_cb_;
     cb<void()> failed_cb_;
