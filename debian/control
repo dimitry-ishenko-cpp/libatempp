@@ -18,5 +18,6 @@ Package: libatem++-dev
 Section: libdevel
 Architecture: any
 Depends: ${misc:Depends},
+ libasio-dev,
  libatem++ (= ${binary:Version})
 Description: Interactive C++ interpreter
