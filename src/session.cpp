@@ -219,7 +219,7 @@ void session::recv_InPr(raw_view p)
 {
     if(p.size() >= 36)
     {
-        input_data new_in
+        input_data new_d
         {
             static_cast<in_id>( to_uint16(p[0], p[1]) ),         // id
             string{ trimmed(p.substr(22, InPr_name_size)) },     // name
@@ -229,10 +229,10 @@ void session::recv_InPr(raw_view p)
             to_uint8(p[35]),                                     // mes
         };
 
-        for(auto& in : ins_)
-            if(in.id == no_id || in.id == new_in.id)
+        for(auto& d : ins_)
+            if(d.id == no_id || d.id == new_d.id)
             {
-                in = std::move(new_in);
+                d = std::move(new_d);
                 break;
             }
     }
