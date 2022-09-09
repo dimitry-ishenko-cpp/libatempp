@@ -1,0 +1,22 @@
+Source: libatem++
+Section: devel
+Priority: optional
+Maintainer: Dimitry Ishenko <dimitry.ishenko@gmail.com>
+Build-Depends: debhelper-compat (= 13),
+ libasio-dev
+Standards-Version: 4.6.0
+Homepage: https://github.com/dimitry-ishenko-cpp/libatempp
+Rules-Requires-Root: no
+
+Package: libatem++
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: C++ Library for Blackmagic ATEM Switchers
+
+Package: libatem++-dev
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends},
+ libatem++ (= ${binary:Version})
+Description: Interactive C++ interpreter

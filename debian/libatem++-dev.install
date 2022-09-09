@@ -1,0 +1,3 @@
+usr/include/atem++/
+usr/lib/${DEB_HOST_MULTIARCH}/libatem++.a
+usr/lib/${DEB_HOST_MULTIARCH}/libatem++.so
