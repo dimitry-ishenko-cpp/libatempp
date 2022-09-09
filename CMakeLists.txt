@@ -12,29 +12,27 @@ add_definitions(-DVERSION="${PROJECT_VERSION}")
 set(HEADERS
     src/aux_bus.hpp
     src/aux_busses.hpp
-    src/cmd.hpp
     src/input.hpp
     src/inputs.hpp
     src/me.hpp
     src/mes.hpp
-    src/packet.hpp
-    src/session.hpp
     src/switcher.hpp
     src/types.hpp
-    src/utils.hpp
 ) # public headers, use SOURCES for private headers
 
 set(SOURCES
     src/aux_bus.cpp
     src/aux_busses.cpp
+    src/cmd.hpp
     src/input.cpp
     src/input_data.hpp
     src/inputs.cpp
     src/me.cpp
     src/mes.cpp
-    src/packet.cpp
-    src/session.cpp
+    src/packet.cpp src/packet.hpp
+    src/session.cpp src/session.hpp
     src/switcher.cpp
+    src/utils.hpp
 )
 
 include(GNUInstallDirs)
