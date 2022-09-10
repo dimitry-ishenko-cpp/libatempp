@@ -29,6 +29,7 @@ class switcher
 {
 public:
     switcher(asio::io_context&, string hostname, port = 9910);
+    ~switcher();
 
     ////////////////////
     void connect();
