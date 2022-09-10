@@ -185,8 +185,8 @@ void session::recv__ver(raw_view p)
 {
     if(p.size() >= 4)
     {
-        int major = to_uint16(p[0], p[1]);
-        int minor = to_uint16(p[2], p[3]);
+        size_t major = to_uint16(p[0], p[1]);
+        size_t minor = to_uint16(p[2], p[3]);
 
         maybe_call(ver_cb_, major, minor);
     }

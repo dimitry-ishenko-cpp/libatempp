@@ -22,8 +22,6 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-using port = uint16;
-
 struct input_data;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +42,7 @@ public:
     void on_connect_failed(cb<void()> cb) { failed_cb_ = std::move(cb); }
 
     ////////////////////
-    void on_recv_version(cb<void(int major, int minor)> cb) { ver_cb_ = std::move(cb); }
+    void on_recv_version(cb<void(size_t major, size_t minor)> cb) { ver_cb_ = std::move(cb); }
     void on_recv_prod_info(cb<void(string_view)> cb) { info_cb_ = std::move(cb); }
 
     using top_cb = cb<void(size_t mes, size_t auxs, const vec<input_data>&)>;
@@ -84,7 +82,7 @@ private:
     void send_packet(cmd, raw_view payload);
 
     ////////////////////
-    cb<void(int, int)> ver_cb_;
+    cb<void(size_t, size_t)> ver_cb_;
     void recv__ver(raw_view);
 
     cb<void(string_view)> info_cb_;
