@@ -20,6 +20,8 @@ set(HEADERS
     src/types.hpp
 ) # public headers, use SOURCES for private headers
 
+set(OVERALL_HEADER src/atem++.hpp)
+
 set(SOURCES
     src/aux_bus.cpp
     src/aux_busses.cpp
@@ -56,3 +58,4 @@ set_target_properties(static PROPERTIES OUTPUT_NAME ${LIBRARY_NAME})
 
 install(TARGETS static DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT static)
 install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME} COMPONENT static)
+install(FILES ${OVERALL_HEADER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT static)
