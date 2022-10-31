@@ -69,12 +69,13 @@ session::~session() { disconnect(); }
 ////////////////////////////////////////////////////////////////////////////////
 void session::disconnect()
 {
-    conn_ = false;
+    if(socket_.is_open())
+    {
+        timer_.cancel();
+        socket_.close();
 
-    timer_.cancel();
-    socket_.close();
-
-    maybe_call(disc_cb_);
+        maybe_call(disc_cb_);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -104,8 +105,6 @@ void session::async_wait()
                     {
                         timer_.expires_after(1000ms);
                         timer_.async_wait([=](auto ec){ if(!ec) disconnect(); });
-
-                        conn_ = true;
 
                         if(pkt.empty())
                         {

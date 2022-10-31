@@ -31,7 +31,7 @@ public:
     session(asio::io_context&, string_view hostname, port);
     ~session();
 
-    bool is_connected() const { return conn_; }
+    bool is_connected() const { return socket_.is_open(); }
     void on_disconnected(cb<void()> cb) { disc_cb_ = std::move(cb); }
 
     ////////////////////
@@ -59,7 +59,6 @@ public:
 private:
     asio::ip::udp::socket socket_;
 
-    bool conn_ = false;
     cb<void()> disc_cb_;
     void disconnect();
 
