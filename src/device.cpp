@@ -5,9 +5,9 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "device.hpp"
 #include "input_data.hpp"
 #include "session.hpp"
-#include "switcher.hpp"
 #include "utils.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -15,7 +15,7 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-switcher::switcher(asio::io_context& ctx, string_view hostname, port p) :
+device::device(asio::io_context& ctx, string_view hostname, port p) :
     sess_{new session{ctx, hostname, p}},
     mes_ {*sess_},
     ins_ {*sess_},
@@ -54,10 +54,10 @@ switcher::switcher(asio::io_context& ctx, string_view hostname, port p) :
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-switcher::~switcher() { }
+device::~device() { }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool switcher::is_connected() const
+bool device::is_connected() const
 {
     return sess_->is_connected();
 }

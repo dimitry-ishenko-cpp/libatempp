@@ -37,7 +37,7 @@ public:
 private:
     vec<me> mes_;
 
-    friend class switcher;
+    friend class device;
     void change_pgm(me_num, input_id);
     void change_pvw(me_num, input_id);
 };

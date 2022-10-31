@@ -25,11 +25,11 @@ namespace atem
 class session;
 
 ////////////////////////////////////////////////////////////////////////////////
-class switcher
+class device
 {
 public:
-    switcher(asio::io_context&, string_view hostname, port = 9910);
-    ~switcher();
+    device(asio::io_context&, string_view hostname, port = 9910);
+    ~device();
 
     ////////////////////
     bool is_connected() const;

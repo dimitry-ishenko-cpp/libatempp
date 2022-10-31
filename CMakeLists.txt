@@ -12,11 +12,11 @@ add_definitions(-DVERSION="${PROJECT_VERSION}")
 set(HEADERS
     src/aux_bus.hpp
     src/aux_busses.hpp
+    src/device.hpp
     src/input.hpp
     src/inputs.hpp
     src/me.hpp
     src/mes.hpp
-    src/switcher.hpp
     src/types.hpp
 ) # public headers, use SOURCES for private headers
 
@@ -26,6 +26,7 @@ set(SOURCES
     src/aux_bus.cpp
     src/aux_busses.cpp
     src/cmd.hpp
+    src/device.cpp
     src/input.cpp
     src/input_data.hpp
     src/inputs.cpp
@@ -33,7 +34,6 @@ set(SOURCES
     src/mes.cpp
     src/packet.cpp src/packet.hpp
     src/session.cpp src/session.hpp
-    src/switcher.cpp
     src/utils.hpp
 )
 

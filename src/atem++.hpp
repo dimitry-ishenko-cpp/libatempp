@@ -6,7 +6,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "atem++/aux_busses.hpp"
+#include "atem++/device.hpp"
 #include "atem++/inputs.hpp"
 #include "atem++/mes.hpp"
-#include "atem++/switcher.hpp"
 #include "atem++/types.hpp"
