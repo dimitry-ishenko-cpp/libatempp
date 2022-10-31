@@ -36,11 +36,9 @@ public:
     constexpr bool operator< (cmd rhs) const { return val_ < rhs.val_; }
     constexpr bool operator==(cmd rhs) const { return val_== rhs.val_; }
 
-    auto to_chars() const // for debugging
+    constexpr auto to_chars() const
     {
-        return std::make_tuple(
-            to_char(val_ >> 24), to_char(val_ >> 16), to_char(val_ >>  8), to_char(val_)
-        );
+        return std::make_tuple(to_char(val_ >> 24), to_char(val_ >> 16), to_char(val_ >>  8), to_char(val_));
     }
 
 private:
