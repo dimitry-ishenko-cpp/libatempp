@@ -219,20 +219,17 @@ void session::recv_InPr(raw_view p)
 {
     if(p.size() >= 36)
     {
-        input_data new_d
-        {
-            static_cast<in_id>( to_uint16(p[0], p[1]) ),         // id
-            string{ trimmed(p.substr(22, InPr_name_size)) },     // name
-            string{ trimmed(p.substr(2, InPr_long_name_size)) }, // long_name
-            static_cast<input_type>( to_uint8(p[32]) ),          // type
-            static_cast<input_port>( to_uint16(p[30], p[31]) ),  // port
-            to_uint8(p[35]),                                     // mes
-        };
+        auto id = static_cast<in_id>( to_uint16(p[0], p[1]) );
 
-        for(auto& d : ins_)
-            if(d.id == no_id || d.id == new_d.id)
+        for(auto& in : ins_)
+            if(in.id == no_id || in.id == id)
             {
-                d = std::move(new_d);
+                in.id   = id;
+                in.name = trimmed(p.substr(22, InPr_name_size));
+                in.long_name = trimmed(p.substr(2, InPr_long_name_size));
+                in.type = static_cast<input_type>(to_uint8(p[32]));
+                in.port = static_cast<input_port>(to_uint16(p[30], p[31]));
+                in.mes  = to_uint8(p[35]);
                 break;
             }
     }
