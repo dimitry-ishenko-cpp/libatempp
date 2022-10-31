@@ -28,18 +28,12 @@ class session;
 class switcher
 {
 public:
-    switcher(asio::io_context&, string hostname, port = 9910);
+    switcher(asio::io_context&, string_view hostname, port = 9910);
     ~switcher();
 
     ////////////////////
-    void connect();
-    void disconnect();
-
     bool is_connected() const;
-
-    void on_connected(cb<void()> cb) { conn_cb_ = std::move(cb); }
-    void on_disconnected(cb<void()> cb) { awol_cb_ = std::move(cb); }
-    void on_connect_failed(cb<void()> cb) { failed_cb_ = std::move(cb); }
+    void on_disconnected(cb<void()> cb) { disc_cb_ = std::move(cb); }
 
     bool is_initialized() const { return initialized_; }
     void on_initialized(cb<void()> cb) { init_cb_ = std::move(cb); }
@@ -86,8 +80,7 @@ public:
 private:
     std::unique_ptr<session> sess_;
 
-    cb<void()> conn_cb_, awol_cb_;
-    cb<void()> failed_cb_;
+    cb<void()> disc_cb_;
 
     bool initialized_;
     cb<void()> init_cb_;

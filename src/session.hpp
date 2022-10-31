@@ -28,18 +28,11 @@ struct input_data;
 class session
 {
 public:
-    session(asio::io_context&, string hostname, port);
+    session(asio::io_context&, string_view hostname, port);
     ~session();
 
-    ////////////////////
-    void connect();
-    void disconnect();
-
-    bool is_connected() const { return connected_; }
-
-    void on_connected(cb<void()> cb) { conn_cb_ = std::move(cb); }
-    void on_disconnected(cb<void()> cb) { awol_cb_ = std::move(cb); }
-    void on_connect_failed(cb<void()> cb) { failed_cb_ = std::move(cb); }
+    bool is_connected() const { return conn_; }
+    void on_disconnected(cb<void()> cb) { disc_cb_ = std::move(cb); }
 
     ////////////////////
     void on_recv_version(cb<void(size_t major, size_t minor)> cb) { ver_cb_ = std::move(cb); }
@@ -64,15 +57,11 @@ public:
     void set_src(aux_num, input_id);
 
 private:
-    string hostname_;
-    port port_;
     asio::ip::udp::socket socket_;
 
-    bool connected_ = false;
-    cb<void()> conn_cb_, awol_cb_;
-
-    cb<void()> failed_cb_;
-    void conn_failed();
+    bool conn_ = false;
+    cb<void()> disc_cb_;
+    void disconnect();
 
     asio::steady_timer timer_;
     void async_wait();

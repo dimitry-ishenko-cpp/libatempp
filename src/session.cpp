@@ -45,58 +45,36 @@ inline auto trimmed(string_view s)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-session::session(asio::io_context& ctx, string hostname, port p) :
-    hostname_{std::move(hostname)}, port_{p},
+session::session(asio::io_context& ctx, string_view hostname, port p) :
     socket_{ctx},
-    timer_ {ctx}
-{ }
+    timer_{ctx},
+    id_{init_sess_id}, packet_id_{0}
+{
+    udp::resolver resolver{socket_.get_executor()};
+    auto ep = *resolver.resolve(udp::v4(), hostname, std::to_string(p)).begin();
+
+    socket_.connect(ep);
+    async_wait();
+
+    // initiate connection with ATEM
+    socket_.send( packet::init(id_).to_buffer() );
+
+    timer_.expires_after(1000ms);
+    timer_.async_wait([=](asio::error_code ec){ if(!ec) disconnect(); });
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 session::~session() { disconnect(); }
 
 ////////////////////////////////////////////////////////////////////////////////
-void session::connect()
-{
-    if(!connected_)
-    {
-        id_ = init_sess_id;
-        packet_id_ = 0;
-
-        udp::resolver resolver{socket_.get_executor()};
-        auto ep = *resolver.resolve(udp::v4(), hostname_, std::to_string(port_)).begin();
-
-        socket_.connect(ep);
-        async_wait();
-
-        // initiate connection with ATEM
-        socket_.send( packet::init(id_).to_buffer() );
-
-        timer_.expires_after(1000ms);
-        timer_.async_wait([=](asio::error_code ec){ if(!ec) conn_failed(); });
-    }
-}
-
-////////////////////////////////////////////////////////////////////////////////
 void session::disconnect()
 {
-    if(connected_)
-    {
-        connected_ = false;
+    conn_ = false;
 
-        timer_.cancel();
-        socket_.close();
-
-        maybe_call(awol_cb_);
-    }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void session::conn_failed()
-{
     timer_.cancel();
     socket_.close();
 
-    maybe_call(failed_cb_);
+    maybe_call(disc_cb_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -127,11 +105,7 @@ void session::async_wait()
                         timer_.expires_after(1000ms);
                         timer_.async_wait([=](asio::error_code ec){ if(!ec) disconnect(); });
 
-                        if(!connected_)
-                        {
-                            connected_ = true;
-                            maybe_call(conn_cb_);
-                        }
+                        conn_ = true;
 
                         if(pkt.empty())
                         {

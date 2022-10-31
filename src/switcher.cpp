@@ -15,21 +15,17 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
-    sess_{new session{ctx, std::move(hostname), port}},
+switcher::switcher(asio::io_context& ctx, string_view hostname, port p) :
+    sess_{new session{ctx, hostname, p}},
     mes_ {*sess_},
     ins_ {*sess_},
     auxs_{*sess_}
 {
-    sess_->on_connected([=]{ maybe_call(conn_cb_); });
-
     sess_->on_disconnected([=]()
     {
         initialized_ = false;
-        maybe_call(awol_cb_);
+        maybe_call(disc_cb_);
     });
-
-    sess_->on_connect_failed([=]{ maybe_call(failed_cb_); });
 
     sess_->on_recv_version([=](int major, int minor)
     {
@@ -59,25 +55,6 @@ switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
 
 ////////////////////////////////////////////////////////////////////////////////
 switcher::~switcher() { }
-
-////////////////////////////////////////////////////////////////////////////////
-void switcher::connect()
-{
-    ver_ = version{ };
-    prod_info_.clear();
-
-    mes_ = atem::mes{*sess_};
-    ins_ = atem::inputs{*sess_};
-    auxs_= atem::aux_busses{*sess_};
-
-    sess_->connect();
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void switcher::disconnect()
-{
-    sess_->disconnect();
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 bool switcher::is_connected() const
