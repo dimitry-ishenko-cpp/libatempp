@@ -60,7 +60,7 @@ session::session(asio::io_context& ctx, string_view hostname, port p) :
     socket_.send( packet::init(id_).to_buffer() );
 
     timer_.expires_after(1000ms);
-    timer_.async_wait([=](asio::error_code ec){ if(!ec) disconnect(); });
+    timer_.async_wait([=](auto ec){ if(!ec) disconnect(); });
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ void session::disconnect()
 ////////////////////////////////////////////////////////////////////////////////
 void session::async_wait()
 {
-    socket_.async_wait(udp::socket::wait_read, [=](asio::error_code ec)
+    socket_.async_wait(udp::socket::wait_read, [=](auto ec)
     {
         if(!ec)
         {
@@ -103,7 +103,7 @@ void session::async_wait()
                     if(pkt.is(atem::ping))
                     {
                         timer_.expires_after(1000ms);
-                        timer_.async_wait([=](asio::error_code ec){ if(!ec) disconnect(); });
+                        timer_.async_wait([=](auto ec){ if(!ec) disconnect(); });
 
                         conn_ = true;
 
