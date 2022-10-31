@@ -219,7 +219,7 @@ void session::recv_InPr(raw_view p)
 {
     if(p.size() >= 36)
     {
-        auto id = static_cast<in_id>( to_uint16(p[0], p[1]) );
+        auto id = static_cast<input_id>( to_uint16(p[0], p[1]) );
 
         for(auto& in : ins_)
             if(in.id == no_id || in.id == id)
@@ -247,7 +247,7 @@ void session::recv_PrgI(raw_view p)
     if(p.size() >= 4)
     {
         auto me = static_cast<me_num>(to_uint8(p[0]));
-        auto id = static_cast<in_id>(to_uint16(p[2], p[3]));
+        auto id = static_cast<input_id>(to_uint16(p[2], p[3]));
 
         maybe_call(pgm_chng_cb_, me, id);
     }
@@ -259,7 +259,7 @@ void session::recv_PrvI(raw_view p)
     if(p.size() >= 4)
     {
         auto me = static_cast<me_num>(to_uint8(p[0]));
-        auto id = static_cast<in_id>(to_uint16(p[2], p[3]));
+        auto id = static_cast<input_id>(to_uint16(p[2], p[3]));
 
         maybe_call(pvw_chng_cb_, me, id);
     }
@@ -271,14 +271,14 @@ void session::recv_AuxS(raw_view p)
     if(p.size() >= 4)
     {
         auto aux = static_cast<aux_num>(to_uint8(p[0]));
-        auto id = static_cast<in_id>(to_uint16(p[2], p[3]));
+        auto id = static_cast<input_id>(to_uint16(p[2], p[3]));
 
         maybe_call(aux_chng_cb_, aux, id);
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void session::set_input_props(in_id id, opt<string> name, opt<string> long_name, opt<input_port> port)
+void session::set_input_props(input_id id, opt<string> name, opt<string> long_name, opt<input_port> port)
 {
     raw_data p(32, '\0');
 
@@ -310,7 +310,7 @@ void session::set_input_props(in_id id, opt<string> name, opt<string> long_name,
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void session::set_pgm(me_num me, in_id id)
+void session::set_pgm(me_num me, input_id id)
 {
     raw_data p(4, '\0');
     p[0] = to_char(me);
@@ -319,7 +319,7 @@ void session::set_pgm(me_num me, in_id id)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void session::set_pvw(me_num me, in_id id)
+void session::set_pvw(me_num me, input_id id)
 {
     raw_data p(4, '\0');
     p[0] = to_char(me);
@@ -344,7 +344,7 @@ void session::auto_trans(me_num me)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void session::set_src(aux_num aux, in_id id)
+void session::set_src(aux_num aux, input_id id)
 {
     raw_data p(4, '\0');
     p[0] = 1;

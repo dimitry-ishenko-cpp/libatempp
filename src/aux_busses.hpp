@@ -38,7 +38,7 @@ private:
     vec<aux_bus> auxs_;
 
     friend class switcher;
-    void change_src(aux_num, in_id);
+    void change_src(aux_num, input_id);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

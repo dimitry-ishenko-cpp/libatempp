@@ -18,13 +18,13 @@ mes::mes(session& sess, size_t mes)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void mes::change_pgm(me_num me, in_id id)
+void mes::change_pgm(me_num me, input_id id)
 {
     if(me < count()) (*this)[me].change_pgm(id);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void mes::change_pvw(me_num me, in_id id)
+void mes::change_pvw(me_num me, input_id id)
 {
     if(me < count()) (*this)[me].change_pvw(id);
 }

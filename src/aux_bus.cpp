@@ -13,13 +13,13 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-void aux_bus::set_src(in_id id)
+void aux_bus::set_src(input_id id)
 {
     sess_.get().set_src(num_, id);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void aux_bus::change_src(in_id id)
+void aux_bus::change_src(input_id id)
 {
     src_ = id;
     maybe_call(src_chng_cb_, id);

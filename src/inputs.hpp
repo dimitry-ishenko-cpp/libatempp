@@ -38,8 +38,8 @@ public:
     size_t count(input_type) const;
     size_t count(input_port) const;
 
-    opt<input> find(in_id);
-    opt<input const> find(in_id) const;
+    opt<input> find(input_id);
+    opt<input const> find(input_id) const;
 
     opt<input> find(input_type, size_t n = 0);
     opt<input const> find(input_type, size_t n = 0) const;

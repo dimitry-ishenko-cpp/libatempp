@@ -52,9 +52,9 @@ switcher::switcher(asio::io_context& ctx, string hostname, atem::port port) :
         maybe_call(init_cb_);
     });
 
-    sess_->on_pgm_changed([=]( me_num  me, in_id id){  mes_.change_pgm( me, id); });
-    sess_->on_pvw_changed([=]( me_num  me, in_id id){  mes_.change_pvw( me, id); });
-    sess_->on_src_changed([=](aux_num aux, in_id id){ auxs_.change_src(aux, id); });
+    sess_->on_pgm_changed([=]( me_num  me, input_id id){  mes_.change_pgm( me, id); });
+    sess_->on_pvw_changed([=]( me_num  me, input_id id){  mes_.change_pvw( me, id); });
+    sess_->on_src_changed([=](aux_num aux, input_id id){ auxs_.change_src(aux, id); });
 }
 
 ////////////////////////////////////////////////////////////////////////////////

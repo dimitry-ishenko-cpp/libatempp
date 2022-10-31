@@ -18,7 +18,7 @@ namespace atem
 ////////////////////////////////////////////////////////////////////////////////
 struct input_data
 {
-    in_id id = no_id;
+    input_id id = no_id;
 
     string name;
     string long_name;

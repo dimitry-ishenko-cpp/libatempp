@@ -18,7 +18,7 @@ aux_busses::aux_busses(session& sess, size_t auxs)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void aux_busses::change_src(aux_num aux, in_id id)
+void aux_busses::change_src(aux_num aux, input_id id)
 {
     if(aux < count()) (*this)[aux].change_src(id);
 }

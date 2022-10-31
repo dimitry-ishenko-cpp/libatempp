@@ -15,7 +15,7 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-void me::set_pgm(in_id id)
+void me::set_pgm(input_id id)
 {
     sess_.get().set_pgm(num_, id);
 }
@@ -27,7 +27,7 @@ void me::set_pgm(const input& in)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void me::set_pvw(in_id id)
+void me::set_pvw(input_id id)
 {
     sess_.get().set_pvw(num_, id);
 }
@@ -51,14 +51,14 @@ void me::auto_trans()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void me::change_pgm(in_id id)
+void me::change_pgm(input_id id)
 {
     pgm_ = id;
     maybe_call(pgm_chng_cb_, id);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void me::change_pvw(in_id id)
+void me::change_pvw(input_id id)
 {
     pvw_ = id;
     maybe_call(pvw_chng_cb_, id);

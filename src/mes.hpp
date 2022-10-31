@@ -38,8 +38,8 @@ private:
     vec<me> mes_;
 
     friend class switcher;
-    void change_pgm(me_num, in_id);
-    void change_pvw(me_num, in_id);
+    void change_pgm(me_num, input_id);
+    void change_pvw(me_num, input_id);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
