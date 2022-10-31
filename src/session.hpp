@@ -38,8 +38,12 @@ public:
     void on_recv_version(cb<void(size_t major, size_t minor)> cb) { ver_cb_ = std::move(cb); }
     void on_recv_prod_info(cb<void(string_view)> cb) { info_cb_ = std::move(cb); }
 
-    using top_cb = cb<void(size_t mes, size_t auxs, const vec<input_data>&)>;
+    using top_cb = cb<void(size_t mes, size_t auxs, size_t ins)>;
     void on_recv_top(top_cb cb) { top_cb_ = std::move(cb); }
+
+    using in_prop_cb = cb<void(input_data)>;
+    void on_recv_in_prop(in_prop_cb cb) { in_prop_cb_ = std::move(cb); }
+
     void on_recv_init_done(cb<void()> cb) { done_cb_ = std::move(cb); }
 
     void on_pgm_changed(cb<void( me_num, input_id)> cb) { pgm_chng_cb_ = std::move(cb); }
@@ -79,7 +83,7 @@ private:
     top_cb top_cb_;
     void recv__top(raw_view);
 
-    vec<input_data> ins_;
+    in_prop_cb in_prop_cb_;
     void recv_InPr(raw_view);
 
     cb<void()> done_cb_;

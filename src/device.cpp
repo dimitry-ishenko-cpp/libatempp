@@ -35,11 +35,23 @@ device::device(asio::io_context& ctx, string_view hostname, port p) :
 
     sess_->on_recv_prod_info([=](string_view s){ prod_info_ = s; });
 
-    sess_->on_recv_top([=](size_t mes, size_t auxs, const vec<input_data>& ins)
+    sess_->on_recv_top([=](size_t mes, size_t auxs, size_t ins)
     {
+        data_ = vec<input_data>(ins);
+
         mes_ = atem::mes{*sess_, mes};
-        ins_ = atem::inputs{*sess_, ins};
+        ins_ = atem::inputs{*sess_, data_};
         auxs_= atem::aux_busses{*sess_, auxs};
+    });
+
+    sess_->on_recv_in_prop([=](input_data new_d)
+    {
+        for(auto& d : data_)
+            if(d.id == no_id || d.id == new_d.id)
+            {
+                d = std::move(new_d);
+                break;
+            }
     });
 
     sess_->on_recv_init_done([=]()

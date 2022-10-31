@@ -176,14 +176,11 @@ void session::recv__top(raw_view p)
 {
     if(p.size() >= 12)
     {
-        int mes = to_uint8(p[0]);
-        int ins = to_uint8(p[1]);
-        int auxs= to_uint8(p[3]);
+        auto mes = to_uint8(p[0]);
+        auto ins = to_uint8(p[1]);
+        auto auxs= to_uint8(p[3]);
 
-        ins_.clear();
-        ins_.resize(ins);
-
-        maybe_call(top_cb_, mes, auxs, std::cref(ins_));
+        maybe_call(top_cb_, mes, auxs, ins);
     }
 }
 
@@ -192,19 +189,14 @@ void session::recv_InPr(raw_view p)
 {
     if(p.size() >= 36)
     {
-        auto id = static_cast<input_id>( to_uint16(p[0], p[1]) );
-
-        for(auto& in : ins_)
-            if(in.id == no_id || in.id == id)
-            {
-                in.id   = id;
-                in.name = trimmed(p.substr(22, InPr_name_size));
-                in.long_name = trimmed(p.substr(2, InPr_long_name_size));
-                in.type = static_cast<input_type>(to_uint8(p[32]));
-                in.port = static_cast<input_port>(to_uint16(p[30], p[31]));
-                in.mes  = to_uint8(p[35]);
-                break;
-            }
+        maybe_call(in_prop_cb_, input_data {
+            static_cast<input_id>( to_uint16(p[0], p[1]) ),      // id
+            string{ trimmed(p.substr(22, InPr_name_size)) },     // name
+            string{ trimmed(p.substr(2, InPr_long_name_size)) }, // long_name
+            static_cast<input_type>( to_uint8(p[32]) ),          // type
+            static_cast<input_port>( to_uint16(p[30], p[31]) ),  // port
+            to_uint8(p[35]),                                     // mes
+        });
     }
 }
 
