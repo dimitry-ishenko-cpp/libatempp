@@ -16,10 +16,7 @@ namespace atem
 
 ////////////////////////////////////////////////////////////////////////////////
 device::device(asio::io_context& ctx, string_view hostname, port p) :
-    sess_{new session{ctx, hostname, p}},
-    mes_ {*sess_},
-    ins_ {*sess_},
-    auxs_{*sess_}
+    sess_{std::make_unique<session>(ctx, hostname, p)}
 {
     sess_->on_disconnected([=]()
     {
@@ -39,9 +36,9 @@ device::device(asio::io_context& ctx, string_view hostname, port p) :
     {
         data_ = vec<input_data>(ins);
 
-        mes_ = atem::mes{*sess_, mes};
-        ins_ = atem::inputs{*sess_, data_};
-        auxs_= atem::aux_busses{*sess_, auxs};
+        mes_   = std::make_unique<atem::mes>(*sess_, mes);
+        inputs_= std::make_unique<atem::inputs>(*sess_, data_);
+        auxs_  = std::make_unique<atem::aux_busses>(*sess_, auxs);
     });
 
     sess_->on_recv_in_prop([=](input_data new_d)
@@ -60,13 +57,16 @@ device::device(asio::io_context& ctx, string_view hostname, port p) :
         maybe_call(init_cb_);
     });
 
-    sess_->on_pgm_changed([=]( me_num  me, input_id id){  mes_.change_pgm( me, id); });
-    sess_->on_pvw_changed([=]( me_num  me, input_id id){  mes_.change_pvw( me, id); });
-    sess_->on_src_changed([=](aux_num aux, input_id id){ auxs_.change_src(aux, id); });
+    sess_->on_pgm_changed([=]( me_num  me, input_id id){  mes_->change_pgm( me, id); });
+    sess_->on_pvw_changed([=]( me_num  me, input_id id){  mes_->change_pvw( me, id); });
+    sess_->on_src_changed([=](aux_num aux, input_id id){ auxs_->change_src(aux, id); });
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 device::~device() { }
+
+device::device(device&&) = default;
+device& device::operator=(device&&) = default;
 
 ////////////////////////////////////////////////////////////////////////////////
 bool device::is_connected() const

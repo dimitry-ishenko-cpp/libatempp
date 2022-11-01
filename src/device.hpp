@@ -23,7 +23,6 @@ namespace atem
 
 ////////////////////////////////////////////////////////////////////////////////
 struct input_data;
-
 class session;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,6 +31,9 @@ class device
 public:
     device(asio::io_context&, string_view hostname, port = 9910);
     ~device();
+
+    device(device&&);
+    device& operator=(device&&);
 
     ////////////////////
     bool is_connected() const;
@@ -44,40 +46,40 @@ public:
     auto const& product_info() const { return prod_info_; }
 
     ////////////////////
-    auto& mes() { return mes_; }
-    auto const& mes() const { return mes_; }
+    auto& mes() { return *mes_; }
+    auto const& mes() const { return *mes_; }
 
-    auto me_count() const { return mes_.count(); }
+    auto me_count() const { return mes_->count(); }
 
-    auto& me(int n) { return mes_.get(n); }
-    auto const& me(int n) const { return mes_.get(n); }
-
-    ////////////////////
-    auto& inputs() { return ins_; }
-    auto const& inputs() const { return ins_; }
-
-    auto input_count() const { return ins_.count(); }
-
-    auto& input(int n) { return ins_.get(n); }
-    auto const& input(int n) const { return ins_.get(n); }
-
-    auto find_input(input_id id) { return ins_.find(id); }
-    auto find_input(input_id id) const { return ins_.find(id); }
-
-    auto find_input(input_type t, size_t n = 0) { return ins_.find(t, n); }
-    auto find_input(input_type t, size_t n = 0) const { return ins_.find(t, n); }
-
-    auto find_input(input_port p, size_t n = 0) { return ins_.find(p, n); }
-    auto find_input(input_port p, size_t n = 0) const { return ins_.find(p, n); }
+    auto& me(int n) { return mes_->get(n); }
+    auto const& me(int n) const { return mes_->get(n); }
 
     ////////////////////
-    auto& aux_busses() { return auxs_; }
-    auto const& aux_busses() const { return auxs_; }
+    auto& inputs() { return *inputs_; }
+    auto const& inputs() const { return *inputs_; }
 
-    auto aux_count() const { return auxs_.count(); }
+    auto input_count() const { return inputs_->count(); }
 
-    auto& aux_bus(int n) { return auxs_.get(n); }
-    auto const& aux_bus(int n) const { return auxs_.get(n); }
+    auto& input(int n) { return inputs_->get(n); }
+    auto const& input(int n) const { return inputs_->get(n); }
+
+    auto find_input(input_id id) { return inputs_->find(id); }
+    auto find_input(input_id id) const { return inputs_->find(id); }
+
+    auto find_input(input_type t, size_t n = 0) { return inputs_->find(t, n); }
+    auto find_input(input_type t, size_t n = 0) const { return inputs_->find(t, n); }
+
+    auto find_input(input_port p, size_t n = 0) { return inputs_->find(p, n); }
+    auto find_input(input_port p, size_t n = 0) const { return inputs_->find(p, n); }
+
+    ////////////////////
+    auto& aux_busses() { return *auxs_; }
+    auto const& aux_busses() const { return *auxs_; }
+
+    auto aux_count() const { return auxs_->count(); }
+
+    auto& aux_bus(int n) { return auxs_->get(n); }
+    auto const& aux_bus(int n) const { return auxs_->get(n); }
 
 private:
     std::unique_ptr<session> sess_;
@@ -92,9 +94,9 @@ private:
 
     vec<input_data> data_;
 
-    atem::mes mes_;
-    atem::inputs ins_;
-    atem::aux_busses auxs_;
+    std::unique_ptr<atem::mes> mes_;
+    std::unique_ptr<atem::inputs> inputs_;
+    std::unique_ptr<atem::aux_busses> auxs_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
