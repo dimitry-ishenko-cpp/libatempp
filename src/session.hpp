@@ -14,8 +14,6 @@
 #include "types.hpp"
 
 #include <asio.hpp>
-#include <string>
-#include <string_view>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace atem
