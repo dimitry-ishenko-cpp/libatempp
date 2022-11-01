@@ -23,7 +23,7 @@ class session;
 class aux_busses
 {
 public:
-    explicit aux_busses(session&, size_t auxs = 0);
+    explicit aux_busses(session&, size_t auxs);
 
     ////////////////////
     auto count() const { return auxs_.size(); }
