@@ -23,7 +23,7 @@ class session;
 class mes
 {
 public:
-    explicit mes(session&, size_t mes = 0);
+    explicit mes(session&, size_t mes);
 
     ////////////////////
     auto count() const { return mes_.size(); }
