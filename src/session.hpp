@@ -31,11 +31,11 @@ public:
     session(asio::io_context&, string_view hostname, port);
     ~session();
 
-    bool is_connected() const { return socket_.is_open(); }
-    void on_disconnected(cb<void()> cb) { disc_cb_ = std::move(cb); }
+    bool is_online() const { return socket_.is_open(); }
+    void on_offline(cb<void()> cb) { off_cb_ = std::move(cb); }
 
     ////////////////////
-    void on_recv_version(cb<void(size_t major, size_t minor)> cb) { ver_cb_ = std::move(cb); }
+    void on_recv_ver(cb<void(size_t major, size_t minor)> cb) { ver_cb_ = std::move(cb); }
     void on_recv_prod_info(cb<void(string_view)> cb) { info_cb_ = std::move(cb); }
 
     using top_cb = cb<void(size_t mes, size_t auxs, size_t ins)>;
@@ -63,8 +63,8 @@ public:
 private:
     asio::ip::udp::socket socket_;
 
-    cb<void()> disc_cb_;
-    void disconnect();
+    cb<void()> off_cb_;
+    void close();
 
     asio::steady_timer timer_;
     void async_wait();

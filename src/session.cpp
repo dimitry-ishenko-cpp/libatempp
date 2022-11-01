@@ -60,21 +60,21 @@ session::session(asio::io_context& ctx, string_view hostname, port p) :
     socket_.send( packet::init(id_).to_buffer() );
 
     timer_.expires_after(1000ms);
-    timer_.async_wait([=](auto ec){ if(!ec) disconnect(); });
+    timer_.async_wait([=](auto ec){ if(!ec) close(); });
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-session::~session() { disconnect(); }
+session::~session() { close(); }
 
 ////////////////////////////////////////////////////////////////////////////////
-void session::disconnect()
+void session::close()
 {
     if(socket_.is_open())
     {
         timer_.cancel();
         socket_.close();
 
-        maybe_call(disc_cb_);
+        maybe_call(off_cb_);
     }
 }
 
@@ -104,7 +104,7 @@ void session::async_wait()
                     if(pkt.is(atem::ping))
                     {
                         timer_.expires_after(1000ms);
-                        timer_.async_wait([=](auto ec){ if(!ec) disconnect(); });
+                        timer_.async_wait([=](auto ec){ if(!ec) close(); });
 
                         if(pkt.empty())
                         {

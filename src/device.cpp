@@ -18,13 +18,13 @@ namespace atem
 device::device(asio::io_context& ctx, string_view hostname, port p) :
     sess_{std::make_unique<session>(ctx, hostname, p)}
 {
-    sess_->on_disconnected([=]()
+    sess_->on_offline([=]()
     {
-        initialized_ = false;
-        maybe_call(disc_cb_);
+        defined_ = false;
+        maybe_call(off_cb_);
     });
 
-    sess_->on_recv_version([=](int major, int minor)
+    sess_->on_recv_ver([=](int major, int minor)
     {
         ver_.major = major;
         ver_.minor = minor;
@@ -53,8 +53,8 @@ device::device(asio::io_context& ctx, string_view hostname, port p) :
 
     sess_->on_recv_init_done([=]()
     {
-        initialized_ = true;
-        maybe_call(init_cb_);
+        defined_ = true;
+        maybe_call(def_cb_);
     });
 
     sess_->on_pgm_changed([=]( me_num  me, input_id id){  mes_->change_pgm( me, id); });
@@ -69,9 +69,9 @@ device::device(device&&) = default;
 device& device::operator=(device&&) = default;
 
 ////////////////////////////////////////////////////////////////////////////////
-bool device::is_connected() const
+bool device::is_online() const
 {
-    return sess_->is_connected();
+    return sess_->is_online();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

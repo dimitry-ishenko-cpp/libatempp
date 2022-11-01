@@ -36,14 +36,14 @@ public:
     device& operator=(device&&);
 
     ////////////////////
-    bool is_connected() const;
-    void on_disconnected(cb<void()> cb) { disc_cb_ = std::move(cb); }
+    bool is_online() const;
+    void on_offline(cb<void()> cb) { off_cb_ = std::move(cb); }
 
-    bool is_initialized() const { return initialized_; }
-    void on_initialized(cb<void()> cb) { init_cb_ = std::move(cb); }
+    bool is_defined() const { return defined_; }
+    void on_defined(cb<void()> cb) { def_cb_ = std::move(cb); }
 
     auto const& protocol() const { return ver_; }
-    auto const& product_info() const { return prod_info_; }
+    auto const& prod_info() const { return prod_info_; }
 
     ////////////////////
     auto& mes() { return *mes_; }
@@ -84,10 +84,10 @@ public:
 private:
     std::unique_ptr<session> sess_;
 
-    cb<void()> disc_cb_;
+    cb<void()> off_cb_;
 
-    bool initialized_;
-    cb<void()> init_cb_;
+    bool defined_ = false;
+    cb<void()> def_cb_;
 
     version ver_;
     string prod_info_;
