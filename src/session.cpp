@@ -49,7 +49,7 @@ session::session(asio::io_context& ctx, string_view hostname, port p) :
     timer_{ctx},
     id_{init_sess_id}, packet_id_{0}
 {
-    udp::resolver resolver{socket_.get_executor()};
+    udp::resolver resolver{ctx};
     auto ep = *resolver.resolve(udp::v4(), hostname, std::to_string(p)).begin();
 
     socket_.connect(ep);
