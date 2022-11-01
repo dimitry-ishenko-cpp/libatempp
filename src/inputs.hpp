@@ -24,16 +24,16 @@ struct input_data;
 class inputs
 {
 public:
-    explicit inputs(session& sess, const vec<input_data>& = { });
+    explicit inputs(session& sess, const vec<input_data>&);
 
     ////////////////////
-    auto count() const { return ins_.size(); }
+    auto count() const { return inputs_.size(); }
 
-    auto& operator[](int n) { return ins_[n]; }
-    auto const& operator[](int n) const { return ins_[n]; }
+    auto& operator[](int n) { return inputs_[n]; }
+    auto const& operator[](int n) const { return inputs_[n]; }
 
-    auto& get(int n) { return ins_.at(n); }
-    auto const& get(int n) const { return ins_.at(n); }
+    auto& get(int n) { return inputs_.at(n); }
+    auto const& get(int n) const { return inputs_.at(n); }
 
     size_t count(input_type) const;
     size_t count(input_port) const;
@@ -48,7 +48,7 @@ public:
     opt<input const> find(input_port, size_t n = 0) const;
 
 private:
-    vec<input> ins_;
+    vec<input> inputs_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
