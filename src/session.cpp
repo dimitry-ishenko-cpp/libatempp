@@ -16,7 +16,6 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-using asio::ip::udp;
 using namespace std::chrono_literals;
 
 // "magic" session id to initiate connection with ATEM
@@ -44,14 +43,11 @@ inline auto trimmed(string_view s)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-session::session(asio::io_context& ctx, string_view hostname, port p) :
+session::session(asio::io_context& ctx, const udp::endpoint& ep) :
     socket_{ctx},
     timer_{ctx},
     id_{init_sess_id}, packet_id_{0}
 {
-    udp::resolver resolver{ctx};
-    auto ep = *resolver.resolve(udp::v4(), hostname, std::to_string(p)).begin();
-
     socket_.connect(ep);
     async_wait();
 

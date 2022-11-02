@@ -28,8 +28,11 @@ class session;
 ////////////////////////////////////////////////////////////////////////////////
 class device
 {
+    using udp = asio::ip::udp;
+
 public:
     device(asio::io_context&, string_view hostname, port = 9910);
+    device(asio::io_context&, const udp::endpoint&);
     ~device();
 
     device(device&&);
@@ -83,6 +86,8 @@ public:
 
 private:
     std::unique_ptr<session> sess_;
+
+    udp::endpoint make_endpoint(asio::io_context&, string_view hostname, port);
 
     cb<void()> off_cb_;
 

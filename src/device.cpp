@@ -16,7 +16,12 @@ namespace atem
 
 ////////////////////////////////////////////////////////////////////////////////
 device::device(asio::io_context& ctx, string_view hostname, port p) :
-    sess_{std::make_unique<session>(ctx, hostname, p)}
+    device(ctx, make_endpoint(ctx, hostname, p))
+{ }
+
+////////////////////////////////////////////////////////////////////////////////
+device::device(asio::io_context& ctx, const udp::endpoint& ep) :
+    sess_{std::make_unique<session>(ctx, ep)}
 {
     sess_->on_offline([=]()
     {
@@ -72,6 +77,13 @@ device& device::operator=(device&&) = default;
 bool device::is_online() const
 {
     return sess_->is_online();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+auto device::make_endpoint(asio::io_context& ctx, string_view hostname, port p) -> udp::endpoint
+{
+    udp::resolver resolver{ctx};
+    return *resolver.resolve(udp::v4(), hostname, std::to_string(p)).begin();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

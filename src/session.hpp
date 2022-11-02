@@ -25,8 +25,10 @@ struct input_data;
 ////////////////////////////////////////////////////////////////////////////////
 class session
 {
+    using udp = asio::ip::udp;
+
 public:
-    session(asio::io_context&, string_view hostname, port);
+    session(asio::io_context&, const udp::endpoint&);
     ~session();
 
     bool is_online() const { return socket_.is_open(); }
