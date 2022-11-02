@@ -15,8 +15,8 @@ namespace atem
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-device::device(asio::io_context& ctx, string_view hostname, port p) :
-    device(ctx, make_endpoint(ctx, hostname, p))
+device::device(asio::io_context& ctx, string_view hostname, string_view port) :
+    device(ctx, make_endpoint(ctx, hostname, port))
 { }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -80,10 +80,10 @@ bool device::is_online() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-auto device::make_endpoint(asio::io_context& ctx, string_view hostname, port p) -> udp::endpoint
+auto device::make_endpoint(asio::io_context& ctx, string_view hostname, string_view port) -> udp::endpoint
 {
     udp::resolver resolver{ctx};
-    return *resolver.resolve(udp::v4(), hostname, std::to_string(p)).begin();
+    return *resolver.resolve(udp::v4(), hostname, port).begin();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
