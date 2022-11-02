@@ -29,7 +29,6 @@ class session
 
 public:
     session(asio::io_context&, const udp::endpoint&);
-    ~session();
 
     bool is_online() const { return socket_.is_open(); }
     void on_offline(cb<void()> cb) { off_cb_ = std::move(cb); }

@@ -59,18 +59,12 @@ session::session(asio::io_context& ctx, const udp::endpoint& ep) :
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-session::~session() { close(); }
-
-////////////////////////////////////////////////////////////////////////////////
 void session::close()
 {
-    if(socket_.is_open())
-    {
-        timer_.cancel();
-        socket_.close();
+    timer_.cancel();
+    socket_.close();
 
-        maybe_call(off_cb_);
-    }
+    maybe_call(off_cb_);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
