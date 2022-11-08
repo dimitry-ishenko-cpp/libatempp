@@ -13,6 +13,9 @@ Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: C++ Library for Blackmagic ATEM Switchers
+ The libatem++ library allows one to control Blackmagic ATEM devices.
+ .
+ This package contains the shared library.
 
 Package: libatem++-dev
 Section: libdevel
@@ -20,4 +23,7 @@ Architecture: any
 Depends: ${misc:Depends},
  libasio-dev,
  libatem++ (= ${binary:Version})
-Description: Interactive C++ interpreter
+Description: C++ Library for Blackmagic ATEM Switchers
+ The libatem++ library allows one to control Blackmagic ATEM devices.
+ .
+ This package contains development files.
