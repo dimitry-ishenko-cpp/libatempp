@@ -34,6 +34,25 @@ public:
     auto& get(int n) { return mes_.at(n); }
     auto const& get(int n) const { return mes_.at(n); }
 
+    ////////////////////
+    auto begin() { return mes_.begin(); }
+    auto end() { return mes_.end(); }
+
+    auto begin() const { return mes_.begin(); }
+    auto end() const { return mes_.end(); }
+
+    auto cbegin() const { return mes_.begin(); }
+    auto cend() const { return mes_.end(); }
+
+    auto rbegin() { return mes_.rbegin(); }
+    auto rend() { return mes_.rend(); }
+
+    auto rbegin() const { return mes_.rbegin(); }
+    auto rend() const { return mes_.rend(); }
+
+    auto crbegin() const { return mes_.rbegin(); }
+    auto crend() const { return mes_.rend(); }
+
 private:
     vec<me> mes_;
 
