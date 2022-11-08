@@ -49,12 +49,22 @@ set_target_properties(shared PROPERTIES OUTPUT_NAME ${LIBRARY_NAME})
 set_target_properties(shared PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(shared PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
 
+if(CYGWIN)
+    target_compile_definitions(shared PRIVATE _WIN32_WINNT=0x0601 __USE_W32_SOCKETS)
+    target_link_libraries(shared PRIVATE ws2_32)
+endif()
+
 install(TARGETS shared DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT shared)
 
 # static dev library and headers
 add_library(static STATIC ${HEADERS} ${SOURCES})
 target_compile_definitions(static PRIVATE ASIO_STANDALONE ASIO_NO_DEPRECATED)
 set_target_properties(static PROPERTIES OUTPUT_NAME ${LIBRARY_NAME})
+
+if(CYGWIN)
+    target_compile_definitions(static PRIVATE _WIN32_WINNT=0x0601 __USE_W32_SOCKETS)
+    target_link_libraries(static PRIVATE ws2_32)
+endif()
 
 install(TARGETS static DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT static)
 install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME} COMPONENT static)
