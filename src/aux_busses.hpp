@@ -34,6 +34,25 @@ public:
     auto& get(int n) { return auxs_.at(n); }
     auto const& get(int n) const { return auxs_.at(n); }
 
+    ////////////////////
+    auto begin() { return auxs_.begin(); }
+    auto end() { return auxs_.end(); }
+
+    auto begin() const { return auxs_.begin(); }
+    auto end() const { return auxs_.end(); }
+
+    auto cbegin() const { return auxs_.begin(); }
+    auto cend() const { return auxs_.end(); }
+
+    auto rbegin() { return auxs_.rbegin(); }
+    auto rend() { return auxs_.rend(); }
+
+    auto rbegin() const { return auxs_.rbegin(); }
+    auto rend() const { return auxs_.rend(); }
+
+    auto crbegin() const { return auxs_.rbegin(); }
+    auto crend() const { return auxs_.rend(); }
+
 private:
     vec<aux_bus> auxs_;
 
