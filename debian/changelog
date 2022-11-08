@@ -1,5 +1,125 @@
-libatem++ (1.0) UNRELEASED; urgency=medium
+libatem++ (1.0) unstable; urgency=medium
 
-  * Initial Release.
+  * Update description
+  * Add basic README.md
+  * Add support for cygwin
+  * mes: make iterable
+  * inputs: make iterable
+  * aux_busses: make iterable
+  * session: use default dtor
+  * device: use string_view for port
+  * Move resolver into device, accept endpoint
+  * session: use ctx
+  * CMakeLists.txt: make definitions private
+  * session: remove extraneous headers
+  * Better names
+  * aux_busses: be more strict
+  * inputs: no default param
+  * mes: be more strict
+  * device: make movable
+  * Store input_data inside device
+  * switcher -> device
+  * session: use socket to determine connection state
+  * session: use generic lambas
+  * RAII-fy session and switcher
+  * in_id -> input_id
+  * session: readability
+  * cmd: formatting
+  * types: formatting
+  * Add overall header atem++.hpp
+  * Ignore .vscode
+  * switcher: move dtor into switcher.cpp
+  * Move version and port to types.hpp
+  * Don't install internal headers
+  * switcher: hide session class
+  * session: in -> d
+  * debian: add dep on libasio-dev
+  * Add Debian packaging
+  * Let Debian packaging install docs
+  * switcher: add several find_input() overloads
+  * Fix white space
+  * types: ref -> ref_wrap
+  * inputs: remove reset() and rely on move instead
+  * mes: remove reset() and rely on move instead
+  * aux_busses: remove reset() and rely on move instead
+  * mes: move cbs into switcher
+  * aux_busses: move cb into switcher
+  * Rename src_id to in_id for consistency
+  * input_data: formatting
+  * session: initialize inputs on _top command
+  * input_data: use no_id
+  * inputs: allow searching for specific inputs
+  * session: formatting
+  * input: formatting
+  * aux_bus: keep track of source
+  * inputs: make reusable
+  * mes: make reusable
+  * aux_busses: make reusable
+  * Revert "mes: remove cbs in dtor"
+  * Revert "aux_busses: remove cb in dtor"
+  * me: keep track of pgm and pvw sources
+  * types: add no_id enumerator
+  * session: report mes and auxs on _top command
+  * switcher: be more explicit
+  * mes: remove cbs in dtor
+  * aux_busses: remove cb in dtor
+  * session: fix names
+  * aux_bus: implement src control
+  * session: handle AuxS and CAuS commands
+  * Rename to libatem++
+  * switcher: add aux busses
+  * Add bits for aux busses
+  * switcher: reset things on connect
+  * session: report number of aux busses
+  * types: add aux_num enum
+  * session: reset mes_ and ins_data_ on connect
+  * Store me_num inside me
+  * me: implement on_pgm_changed and on_pvw_changed
+  * session: handle PrgI and PrvI commands
+  * input: add pgm_on() and pvw_on()
+  * me: formatting
+  * Store me number as me_num enum
+  * types: formatting
+  * me: implement set_pgm(), set_pvw(), cut() and auto_trans()
+  * session: handle CPgI, CPvI, DCut and DAut commands
+  * types: add size_t alias
+  * input: implement prop setting
+  * session: handle CInL command
+  * types: add opt alias
+  * session: add send_packet()
+  * Store input id as src_id enum
+  * Revert "input_data: enable comparison"
+  * types: add string and string_view aliases
+  * session: split up command handlers
+  * input: give access to id
+  * me: give access to num
+  * me_data: index -> num
+  * session: properly handle InPr updates
+  * input_data: enable comparison
+  * switcher: give access to me and input count
+  * Partial implementation of input handling
+  * mes: fix names
+  * Report mes when init is done
+  * Revert "session: first allocate, then fill mes"
+  * types: sort
+  * mes: data_ -> mes_
+  * session: first allocate, then fill mes
+  * me_data: preset invalid index
+  * session: use default move/copy ctor/assign
+  * Hide me_data header
+  * types: add input_type and input_port enums
+  * Move me_data into session
+  * types: add vec alias
+  * Use references instead of pointers
+  * types: add ref and cref
+  * switcher: handle mes
+  * mes: give access to individual mes
+  * Add initial bits for me handling
+  * session: partially handle _top command
+  * Add bits for switcher
+  * session: handle _ver, _pin and InCm commands
+  * Ignore build files
+  * Import basic bits from libatem0
+  * Initial commit
 
- -- Dimitry Ishenko <dimitry.ishenko@gmail.com>  Thu, 08 Sep 2022 23:28:05 -0400
+ -- Dimitry Ishenko <dimitry.ishenko@gmail.com>  Mon, 07 Nov 2022 20:39:41 -0500
