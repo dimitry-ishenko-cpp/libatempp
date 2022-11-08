@@ -47,6 +47,25 @@ public:
     opt<input> find(input_port, size_t n = 0);
     opt<input const> find(input_port, size_t n = 0) const;
 
+    ////////////////////
+    auto begin() { return inputs_.begin(); }
+    auto end() { return inputs_.end(); }
+
+    auto begin() const { return inputs_.begin(); }
+    auto end() const { return inputs_.end(); }
+
+    auto cbegin() const { return inputs_.begin(); }
+    auto cend() const { return inputs_.end(); }
+
+    auto rbegin() { return inputs_.rbegin(); }
+    auto rend() { return inputs_.rend(); }
+
+    auto rbegin() const { return inputs_.rbegin(); }
+    auto rend() const { return inputs_.rend(); }
+
+    auto crbegin() const { return inputs_.rbegin(); }
+    auto crend() const { return inputs_.rend(); }
+
 private:
     vec<input> inputs_;
 };
